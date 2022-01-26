@@ -6,5 +6,6 @@ Developed using a ReactJS frontend, a NodeJS backend, and a mySQL Database
 To run:
 ```sh
 cd frontend
+npm i
 npm start
 ```
