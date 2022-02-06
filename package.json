@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "description": "A workouts social media web app",
   "main": "index.js",
-  "engines": {
-    "node": "16.13.1"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "build": "cd frontend && npm run build"
+  },
+  "engines": {
+    "node": "16.13.1"
   },
   "repository": {
     "type": "git",
@@ -20,10 +20,15 @@
   "bugs": {
     "url": "https://github.com/ryangrayson1/sweat-and-tears/issues"
   },
-  "homepage": "https://github.com/ryangrayson1/sweat-and-tears#readme",
+  "homepage": "https://sweat-and-tears.herokuapp.com",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "envify": "^4.1.0",
+    "terser": "^5.10.0",
+    "uglifyify": "^5.0.2"
   }
 }
