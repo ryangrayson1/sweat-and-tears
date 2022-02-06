@@ -4,7 +4,9 @@
   "description": "A workouts social media web app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "node index.js",
+    "build": "cd frontend && npm run build"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/ryangrayson1/sweat-and-tears/issues"
   },
-  "homepage": "https://github.com/ryangrayson1/sweat-and-tears#readme"
+  "homepage": "https://github.com/ryangrayson1/sweat-and-tears#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "path": "^0.12.7"
+  }
 }
