@@ -6,12 +6,25 @@ import Login from './components/Login.jsx';
 import NewUser from './components/NewUser.jsx';
 import Home from './components/Home.jsx';
 import './css/App.css';
+import fire from './fire.js';
+import { createNewUser } from './services/accountServices.js';
 
 function App() {
-
+  document.body.style = 'background: aliceblue;';
+  
   const [loggedIn, setLoggedIn] = useState(false);
 
-  document.body.style = 'background: aliceblue;';
+  fire.auth().onAuthStateChanged((user) => {
+    return user ? setLoggedIn(true) : setLoggedIn(false);
+  });
+
+  const createUser = (fname, lname, email, pword) => {
+    console.log(fname);
+    console.log(lname);
+    console.log(email);
+    console.log(pword);
+    createNewUser(fname, lname, email, pword);
+  };
 
   const login = (email, password) => {
     let auth = true;
@@ -24,18 +37,11 @@ function App() {
   };
 
   const logout = () => {
+    fire.auth().signOut();
     setLoggedIn(false);
   };
 
   console.log("Logged In: " + loggedIn);
-
-  const createUser = (fname, lname, email, pword) => {
-    console.log(fname);
-    console.log(lname);
-    console.log(email);
-    console.log(pword);
-    return login(email, pword);
-  };
 
   return (
     <div className="App">
