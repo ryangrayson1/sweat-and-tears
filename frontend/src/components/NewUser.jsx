@@ -9,7 +9,8 @@ export default function NewUser(props){
 
     const nav = useNavigate();
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         if (firstName && lastName && email && password) {
             if (props.createUserProp(firstName, lastName, email, password)){
                 nav("/home/");
@@ -19,7 +20,7 @@ export default function NewUser(props){
 
     return(
         <div>
-            <h3 className="clean">Create New Profile</h3>
+            <h3>Create New Profile</h3>
 
             <form onSubmit={handleSubmit} className="form-inline signin">
                 <input

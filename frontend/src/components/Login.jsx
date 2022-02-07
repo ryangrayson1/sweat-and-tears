@@ -7,7 +7,8 @@ export default function Login(props){
 
     const nav = useNavigate();
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         if (email && password) {
             if (props.loginProp(email, password)){
                 nav("/home/");
