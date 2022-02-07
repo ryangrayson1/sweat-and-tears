@@ -1,7 +1,8 @@
-import React from 'react';
+import React from "react";
 
-export default function Navbar(){
-    return (
+export default function Navbar(props){
+        
+        return (
         <div>
             <button className="btn btn-success active">
                 <a className="clean" href="/">Home</a>
@@ -15,7 +16,7 @@ export default function Navbar(){
             <button className="btn btn-about active">
                 <a className="clean" href="/about/">About</a>
             </button>&nbsp;
-            <button onClick={signOut} className="btn btn-danger active">
+            <button onClick={props.logout} className="btn btn-danger active">
                 <a className="clean" href="/">Sign out</a>
             </button>
         </div>
