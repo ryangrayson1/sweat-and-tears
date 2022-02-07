@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login(props){
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(e);
+    const nav = useNavigate();
+
+    const handleSubmit = () => {
+        if (email && password) {
+            if (props.loginProp(email, password)){
+                nav("/home/");
+            }
+
+        }
     }
     return (
     <div>    
@@ -37,7 +43,7 @@ export default function Login(props){
                     placeholder="Password"
                 />
                 <br />
-                <button type="submit" className="btn btn-primary active">
+                <button type="submit" href="/home/" className="btn btn-primary active">
                     Sign in
                 </button>
             </form>
