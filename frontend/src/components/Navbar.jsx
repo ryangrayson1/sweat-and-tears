@@ -4,6 +4,7 @@ function Navbar(props){
         
         return (
         <div>
+            <h1> </h1>
             <button className="btn btn-home active">
                 <a className="clean" href="/home/">Home</a>
             </button>&ensp;
@@ -12,8 +13,8 @@ function Navbar(props){
                 <a className="clean" href="/workouts/">Workouts</a>
             </button>&emsp;
 
-            <button className="btn btn-profile active">
-                <a className="clean" href="/profile/"><h2 className="words">Sweat && Tears</h2></a>
+            <button className="btn btn-outline-primary active">
+                <a className="clean" href="/home/"><h1 className="words">Sweat && Tears</h1></a>
             </button>&emsp;
 
             <button className="btn btn-profile active">

@@ -30,3 +30,7 @@
 .btn-profile {
   background-color: rgb(2, 2, 151) !important;
 }
+
+.btn-outline-primary {
+  background-color: aliceblue !important;
+}
