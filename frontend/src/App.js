@@ -7,6 +7,7 @@ import NewUser from './components/NewUser.jsx';
 import Home from './components/Home.jsx';
 import Profile from './components/Profile.jsx';
 import Workouts from './components/Workouts.jsx'; 
+import CreateWorkout from './components/CreateWorkout.jsx';
 import './css/App.css';
 import fire from './fire.js';
 import { createNewUser } from './services/accountServices.js';
@@ -66,12 +67,12 @@ function App() {
         :
         (
           <>
-            <h1>Sweat && Tears</h1>
             <Navbar logoutProp={logout} />
             <Routes>
               <Route exact path="/home/" element={<Home/>}/>
               <Route exact path="/profile/" element={<Profile/>}/>
               <Route exact path="/workouts/" element={<Workouts/>}/>
+              <Route exact path="/create-workout/" element={<CreateWorkout/>}/>
               <Route path="*" element={<Home/>}/>
             </Routes>
           </>

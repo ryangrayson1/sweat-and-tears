@@ -19,6 +19,14 @@
   color: white;
 }
 
+.btn-home {
+  background-color: rgb(0, 197, 231) !important;
+}
+
 .btn-workouts{
-  background-color: rgb(114, 5, 114) !important;
+  background-color: rgb(4, 74, 165) !important;
+}
+
+.btn-profile {
+  background-color: rgb(2, 2, 151) !important;
 }
