@@ -35,14 +35,11 @@ function App() {
   };
 
   const login = (email, password) => {
-    try{
-      fire.auth().signInWithEmailAndPassword(email, password)
-      return true;
-    }
-    catch(e){
-      console.error('Incorrect username or password');
-      alert("incorrect username or password");
-     }
+      return fire.auth().signInWithEmailAndPassword(email, password)
+      .catch((error) => {
+        console.error('Incorrect username or password');
+        alert("incorrect username or password");
+    });
   };
 
   const logout = () => {
