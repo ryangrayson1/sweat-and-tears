@@ -1,13 +1,24 @@
 .App {
   text-align: center;
+  background-color: aliceblue;
 }
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+
+.words {
+  color: rgb(0, 38, 255);
+}
+
+.signin {
+  width: 30%;
+  margin-left: 35%;
+  margin-right: 35%;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.clean {
+  text-decoration: none;
   color: white;
+}
+
+.btn-workouts{
+  background-color: rgb(114, 5, 114) !important;
 }

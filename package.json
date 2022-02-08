@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "node index.js",
-    "build": "cd frontend && npm run build"
+    "build": "cd frontend && npm i && npm run build",
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "16.13.1"
   },
   "repository": {
     "type": "git",
@@ -17,10 +20,17 @@
   "bugs": {
     "url": "https://github.com/ryangrayson1/sweat-and-tears/issues"
   },
-  "homepage": "https://github.com/ryangrayson1/sweat-and-tears#readme",
+  "homepage": "https://sweat-and-tears.herokuapp.com",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.2",
-    "path": "^0.12.7"
+    "firebase": "^9.6.6",
+    "path": "^0.12.7",
+    "react-scripts": "^5.0.0"
+  },
+  "devDependencies": {
+    "envify": "^4.1.0",
+    "terser": "^5.10.0",
+    "uglifyify": "^5.0.2"
   }
 }
