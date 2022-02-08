@@ -11,7 +11,7 @@ import { createNewUser } from './services/accountServices.js';
 
 function App() {
   document.body.style = 'background: aliceblue;';
-  
+
   const [loggedIn, setLoggedIn] = useState(false);
 
   fire.auth().onAuthStateChanged((user) => {
@@ -23,17 +23,24 @@ function App() {
     console.log(lname);
     console.log(email);
     console.log(pword);
-    createNewUser(fname, lname, email, pword);
+    try {
+      createNewUser(fname, lname, email, pword);
+      return true;
+    } catch (e) {
+      console.error(e);
+      alert("account creation failed");
+    }
   };
 
   const login = (email, password) => {
-    let auth = true;
-    if (auth) {
-      setLoggedIn(true);
-      console.log(email);
-      console.log(password);
+    try{
+      fire.auth().signInWithEmailAndPassword(email, password)
       return true;
     }
+    catch(e){
+      console.error('Incorrect username or password');
+      alert("incorrect username or password");
+     }
   };
 
   const logout = () => {
@@ -46,27 +53,29 @@ function App() {
   return (
     <div className="App">
       <Router>
-      {!loggedIn ? 
-      (
-        <>
-          <h1 className="display-1">Sweat && Tears</h1>
-          <Routes>
-            <Route path="/" element={<Login loginProp={login}/>}/>
-            <Route path="/new-user/" element={<NewUser createUserProp={createUser}/>}/>
-          </Routes>
-        </>
-      )
-      :
-      (
-        <>
-          <h1>Sweat && Tears</h1>
-          <Navbar logoutProp={logout} />
-          <Routes>
-            <Route path="/home/" element={<Home/>}/>
-          </Routes>
-        </>
-      )
-      }
+        {!loggedIn ? 
+        (
+          <>
+            <h1 className="display-1">Sweat && Tears</h1>
+            <Routes>
+              <Route exact path="/" element={<Login loginProp={login}/>}/>
+              <Route exact path="/new-user/" element={<NewUser createUserProp={createUser}/>}/>
+              <Route path="*" element={<Login loginProp={login}/>}/>
+            </Routes>
+          </>
+        )
+        :
+        (
+          <>
+            <h1>Sweat && Tears</h1>
+            <Navbar logoutProp={logout} />
+            <Routes>
+              <Route exact path="/home/" element={<Home/>}/>
+              <Route path="*" element={<Home/>}/>
+            </Routes>
+          </>
+        )
+        }
       </Router>
 
     </div>
