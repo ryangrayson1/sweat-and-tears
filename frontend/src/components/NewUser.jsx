@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-export default function NewUser(props){
+function NewUser(props){
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();
     const [email, setEmail] = useState();
@@ -68,3 +68,5 @@ export default function NewUser(props){
         </div>
     )
 }
+
+export default React.memo(NewUser);

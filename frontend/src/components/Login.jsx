@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-export default function Login(props){
+function Login(props){
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
 
@@ -32,7 +32,7 @@ export default function Login(props){
                     type="text"
                     className="form-control"
                     onChange={({ target }) =>     
-                      setEmail(target.value)}
+                    setEmail(target.value)}
                     placeholder="Email"
                 />
                 <br />
@@ -40,7 +40,7 @@ export default function Login(props){
                     type="password"
                     className="form-control"
                     onChange={({ target}) => 
-                      setPassword(target.value)}
+                    setPassword(target.value)}
                     placeholder="Password"
                 />
                 <br />
@@ -51,3 +51,5 @@ export default function Login(props){
         </div>
     )
 }
+
+export default React.memo(Login);

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Navbar(props){
+function Navbar(props){
         
         return (
         <div>
@@ -19,3 +19,5 @@ export default function Navbar(props){
         </div>
     )
 }
+
+export default React.memo(Navbar);

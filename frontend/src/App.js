@@ -5,6 +5,8 @@ import Navbar from './components/Navbar.jsx';
 import Login from './components/Login.jsx';
 import NewUser from './components/NewUser.jsx';
 import Home from './components/Home.jsx';
+import Profile from './components/Profile.jsx';
+import Workouts from './components/Workouts.jsx'; 
 import './css/App.css';
 import fire from './fire.js';
 import { createNewUser } from './services/accountServices.js';
@@ -58,9 +60,9 @@ function App() {
           <>
             <h1 className="display-1">Sweat && Tears</h1>
             <Routes>
-              <Route exact path="/" element={<Login loginProp={login}/>}/>
+              <Route exact path="/" element={<Login loginProp={login} li={loggedIn}/>}/>
               <Route exact path="/new-user/" element={<NewUser createUserProp={createUser}/>}/>
-              <Route path="*" element={<Login loginProp={login}/>}/>
+              <Route path="*" element={<Login loginProp={login} li={loggedIn}/>}/>
             </Routes>
           </>
         )
@@ -71,15 +73,16 @@ function App() {
             <Navbar logoutProp={logout} />
             <Routes>
               <Route exact path="/home/" element={<Home/>}/>
+              <Route exact path="/profile/" element={<Profile/>}/>
+              <Route exact path="/workouts/" element={<Workouts/>}/>
               <Route path="*" element={<Home/>}/>
             </Routes>
           </>
         )
         }
       </Router>
-
     </div>
   );
 }
 
-export default App;
+export default React.memo(App);
