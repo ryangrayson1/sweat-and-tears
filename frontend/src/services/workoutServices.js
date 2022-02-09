@@ -11,8 +11,9 @@ export const createNewWorkout = async (name, description, timeInMinutes, difficu
       };
       console.log(payload);
       try {
-        const res = await axios.post('/wor/', payload);
+        const res = await axios.post('http://localhost:3001/wor/', payload);
         alert("workout successfully created");
+        return res;
     } catch (e) {
         alert("There was a problem creating your workout. please try again.")
         console.error(e);
