@@ -1,0 +1,26 @@
+.add-exercise{
+    color: navy;
+}
+
+.wn {
+    width: 77%;
+    background-color: rgb(72, 221, 221);
+    color: black;
+}
+
+.half{
+    background-color: rgb(72, 221, 221);
+    color: black;
+    width: 38.5%;
+}
+
+.searchbar{
+    background-color: rgb(72, 221, 221);
+    width: 35%;
+    color: black;
+}
+
+.exerciseform{
+    background-color: rgb(72, 221, 221);
+    color: black;
+}
