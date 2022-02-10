@@ -6,36 +6,50 @@ const app = express();
 const dotenv = require('dotenv').config();
 const workoutRouter = require('./controllers/workoutController.js');
 var mysql = require('mysql');
+const bodyParser = require('body-parser')
 
-var connection;
-if (process.env.LOCAL_DEV == 1){
-  connection= mysql.createConnection({
-  host: 'localhost',
-  
-  });
-}
-else {
-
-}
 
 app.use(cors());
 app.use(express.json());
-//app.use(express.static(path.resolve(__dirname, './frontend/build')));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.resolve(__dirname, './frontend/build')));
 //app.use('/wor/', workoutRouter);
-app.use(express.urlencoded({ extended: false }));
 
-// app.get('/wor', (req, res) => {
-//   res.send("workouts api endpoint");
-// });
-
-// app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, './frontend/build', 'index.html'));
-// });
-  
 const PORT = process.env.PORT || 3001;
   
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+});
+
+const pool = mysql.createPool({
+  connectionLimit : 10,
+  host            : process.env.HOST,
+  user            : process.env.MYSQL_USER,
+  password        : process.env.MYSQL_PWORD,
+  database        : process.env.DB_NAME
+});
+
+app.get('/wor/', (req, res) => {
+  pool.getConnection((err, connection) => {
+      if(err) throw err;
+      console.log('connected as id ' + connection.threadId);
+      connection.query('SELECT * from Workouts', (err, rows) => {
+          connection.release() // return the connection to pool
+
+          if (!err) {
+              res.send(rows);
+          } else {
+              console.log(err);
+          }
+
+          // if(err) throw err
+          console.log('The data from User table are: \n', rows);
+      })
+  })
+});
+
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, './frontend/build', 'index.html'));
 });
   
 module.exports = app;
