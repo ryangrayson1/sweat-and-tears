@@ -3,7 +3,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  apiKey: "AIzaSyDG-Dq52vhr1ZdIskqgNCcCN7M4YDm-piQ", // process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "sweat-and-tears-dc59a.firebaseapp.com",
   projectId: "sweat-and-tears-dc59a",
   storageBucket: "sweat-and-tears-dc59a.appspot.com",
