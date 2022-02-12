@@ -16,6 +16,9 @@ function Workouts() {
         fetchData();
       }, []);
 
+      if (workoutData){
+      console.log(workoutData);}
+
     return (
         <div className="App">
             <h3 className="words">Welcome to the Workouts page!</h3>

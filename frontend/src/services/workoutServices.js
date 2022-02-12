@@ -6,12 +6,11 @@ export const createNewWorkout = async (name, description, timeInMinutes, difficu
         description,
         timeInMinutes,
         difficulty,
-        exercises,
         creatorEmail
       };
       console.log(payload);
       try {
-        const res = await axios.post('http://localhost:3001/wor/', payload);
+        const res = await axios.post('/wor/p/', payload);
         alert("workout successfully created");
         return res;
     } catch (e) {
@@ -22,7 +21,7 @@ export const createNewWorkout = async (name, description, timeInMinutes, difficu
 
 export const getWorkoutData = async () => {
   try {
-      const res = await axios.get('/wor');
+      const res = await axios.get('/wor/g/');
       return res.data;
     } catch (e) {
       console.error(e);
