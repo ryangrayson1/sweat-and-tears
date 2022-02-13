@@ -26,15 +26,29 @@ workoutRouter.get('/g/', (req, res) => {
   
             // if(err) throw err
             console.log('The data from User table are: \n', rows);
-        })
+        });
     })
 });
 
 workoutRouter.post('/p/', (req, res) => {
+    const n = req.body.name;
+    const e = req.body.creatorEmail;
+    const d = req.body.description;
+    const t = req.body.timeInMinutes;
+    const di = req.body.difficulty;
     pool.getConnection((err, connection) => {
         if(err) throw err;
         console.log('connected as id ' + connection.threadId);
-        var qry = "INSERT INTO Workouts (email, w_name, description, time, difficulty) VALUES (req.body.creatorEmail, req.body.name, req.body.description, req.body.timeInMinutes, req.body.difficulty)";
+        var qry = "INSERT INTO Workouts (email, w_name, description, time, difficulty) VALUES ('"+e+"', '"+n+"', '"+d+"', '"+t+"', '"+di+"')";
+        connection.query(qry, (err, rows) => {
+            connection.release() // return the connection to pool
+            if (!err) {
+                res.send(rows);
+            } else {
+                console.log(err);
+            }
+            console.log('The data from User table are: \n', rows);
+        });
     });
 });
 
