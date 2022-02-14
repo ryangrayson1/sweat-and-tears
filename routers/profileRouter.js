@@ -6,7 +6,7 @@ const profileRouter = require('express').Router();
 // profileRouter.get('/g/', (req, res) => {
 //     pool.getConnection((err, connection) => {
 //         if (err) throw err;
-//         var qry = "SELECT ..."
+//         var qry = "SELECT "
 //         connection.query()
 //     });
 // });

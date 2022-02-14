@@ -23,7 +23,7 @@ function CreateWorkout() {
     const [difficulty, setDifficulty] = useState('');
 
     const [exercises, setExercises] = useState([
-        { id: uuidv4(), exerciseName: '', sets: '', reps: '', weight:'' },
+        { id: uuidv4(), exerciseName: '', sets: '', reps: ''},
     ]);
     
     const handleSubmit = (e) => {
@@ -54,16 +54,16 @@ function CreateWorkout() {
     const handleChangeInput = (id, event) => {
         const newexercises = exercises.map(i => {
         if(id === i.id) {
-            i[event.target.name] = event.target.value
+            i[event.target.name] = event.target.value;
         }
         return i;
-        })
+        });
         
         setExercises(newexercises);
     }
     
     const handleAddFields = () => {
-        setExercises([...exercises, { exerciseName: '', sets: '', reps: '' }])
+        setExercises([...exercises, { id: uuidv4(), exerciseName: '', sets: '', reps: '' }]);
     }
     
     const handleRemoveFields = id => {

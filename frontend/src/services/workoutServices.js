@@ -6,9 +6,9 @@ export const createNewWorkout = async (name, description, timeInMinutes, difficu
         description,
         timeInMinutes,
         difficulty,
-        creatorEmail
+        creatorEmail,
+        exercises
       };
-      console.log(payload);
       try {
         const res = await axios.post('/wor/p/', payload);
         alert("workout successfully created");
