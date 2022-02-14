@@ -68,6 +68,17 @@ workoutRouter.post('/p/', (req, res) => {
             }
             console.log('The data from User table are: \n', rows);
         });
+
+        // var qry2 = "INSERT INTO Exercises ("
+        // connection.query(qry2, (err, rows) => {
+        //     connection.release() // return the connection to pool
+        //     if (!err) {
+        //         res.send(rows);
+        //     } else {
+        //         console.log(err);
+        //     }
+        //     console.log('The data from User table are: \n', rows);
+        // });
     });
 });
 
