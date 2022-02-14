@@ -37,7 +37,7 @@ workoutRouter.post('/p/', (req, res) => {
             var qry = "INSERT INTO Workouts (email, w_name, description, time, difficulty) VALUES ('"+e+"', '"+n+"', '"+d+"', '"+t+"', '"+di+"')";
             connection.query(qry, (err, rows) => {
                 if (!err) {
-                    res.send(rows);
+                    //res.send(rows);
                     resolve(rows);
                 } else {
                     console.log(err);
@@ -47,26 +47,37 @@ workoutRouter.post('/p/', (req, res) => {
         });
 
         function step2(id){
-            console.log("STEP2! ID = " + id);
-            
-            req.body.exercises.forEach((ex) => {
-                console.log(ex.name);
+            return new Promise((resolve, reject) => {
+                console.log("STEP2! ID = " + id);
+                
+                console.log(req.body);
+                req.body.exercises.forEach((ex) => {
+                    var qry = "INSERT INTO Exercises (wr_id, e_name, sets, reps) VALUES ('"+id+"', '"+ex.exerciseName+"', '"+ex.sets+"', '"+ex.reps+"')";
+                    connection.query(qry, (err, rows) => {
+                        if (!err) {
+                            // res.send(rows);
+                        } else {
+                            console.log(err);
+                            reject("error creating the workout");
+                        }
+                    });   
+                });
+                resolve("success!");
             });
-            // var qry2 = "INSERT INTO Exercises ("
-            // connection.query(qry2, (err, rows) => {
-            //     connection.release() // return the connection to pool
-            //     if (!err) {
-            //         res.send(rows);
-            //     } else {
-            //         console.log(err);
-            //     }
-            //     console.log('The data from User table are: \n', rows);
-            // });
         }
 
         step1.then((rows) => {
             var workID = rows.insertId; //get id from insert response
-            step2(workID);
+            step2(workID)
+            .then((result) => {
+                console.log(result);
+                res.send(rows);
+                connection.release();
+            })
+            .catch((err) => {
+                console.log(err);
+                connection.release();
+            });
         })
         .catch((err) => {
             console.log(err);
