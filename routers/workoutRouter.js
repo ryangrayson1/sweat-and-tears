@@ -3,8 +3,10 @@
 const workoutRouter = require('express').Router();
 var mysql = require('mysql');
 
+var pool = null;
+
 if (process.env.LOCAL_DEV == 1){ // local db connection
-    const pool = mysql.createPool({
+    pool = mysql.createPool({
         connectionLimit : 10,
         host            : process.env.HOST,
         user            : process.env.MYSQL_USER,
@@ -13,7 +15,7 @@ if (process.env.LOCAL_DEV == 1){ // local db connection
     });
 }
 else { //google cloud connection
-    const pool = async config => {
+    pool = async config => {
         // Extract host and port from socket address
         const dbSocketAddr = process.env.CLOUD_HOST.split(':');
       
