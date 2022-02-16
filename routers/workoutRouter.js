@@ -9,7 +9,7 @@ workoutRouter.get('/g/', (req, res) => {
         console.log('connected as id ' + connection.threadId);
         connection.query('SELECT * from Workouts', (err, rows) => {
             connection.release() // return the connection to pool
-  
+            
             if (!err) {
                 res.send(rows);
             } else {
