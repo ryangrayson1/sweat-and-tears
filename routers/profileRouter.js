@@ -3,45 +3,49 @@
 const pool = require('./pool.js');
 const profileRouter = require('express').Router();
 
-profileRouter.get('/g/', (req, res) => {
+profileRouter.get('/g/', async (req, res) => {
     const eml = req.query.email;
     console.log(eml);
-    var allUserData = {};
-    var w_ids = [];
+    
+    var allData = {};
 
-    pool.getConnection((err, connection) => {
-        if (err) throw err;
-        //getting user data
+    try{
         var qry1 = "SELECT * FROM Users WHERE email = '"+eml+"'";
-        connection.query(qry1, (err, rows) => {
-            if (!err) {
-                allUserData["userInfo"] = rows;
-            } else {
-                console.log(err);
-            }
-        });
+        var userData = await getData(qry1);
+        allData["userData"] = userData;
 
-        //get workouts created by this user, exercises will have to wait on this result
-        var workoutData = new Promise((resolve, reject) => {
-            var qry1 = "SELECT * FROM Workouts WHERE email = '"+eml+"'";
-            connection.query(qry1, (err, rows) => {
-                if (!err) {
-                    allUserData["userWorkouts"] = rows;
-                    resolve("workouts data retrieved successfully");
-                } else {
-                    reject(err);
-                }
+        var qry2 = "SELECT * FROM Workouts WHERE email = '"+eml+"' ORDER BY w_id DESC";
+        var userWorkouts = await getData(qry2);
+        allData["userWorkouts"] = userWorkouts;
+
+        for (const wrkout of allData.userWorkouts) {
+            var qry3 = "SELECT * FROM Exercises WHERE wr_id = '"+wrkout.w_id+"' ORDER BY e_id";
+            var exs = await getData(qry3);
+            wrkout["exercises"] = exs;
+        }
+
+        console.log(allData);
+        res.send(allData);
+    }
+    catch(err){
+        console.log(err);
+    }
+
+    async function getData(qry) {
+        return new Promise((resolve, reject) => {
+            pool.getConnection((err, connection) => {
+                if(err) throw err;
+                connection.query(qry, (err, data) => {
+                    connection.release();
+                    if (!err) {
+                        resolve(data);
+                    } else {
+                        reject(err);
+                    }
+                });
             });
         });
-
-        workoutData.then((message) => {
-            console.log(message);
-        }).catch((err) => {
-            console.log(err);
-        });
-
-
-    });
+    };
 });
 
 profileRouter.post('/p/', (req, res) => {

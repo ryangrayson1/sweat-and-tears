@@ -21,19 +21,22 @@ export const createNewUser = async (fname, lname, email, pword) => {
     }
 };
 
-export const getUserData = () => {
-    const e = fire.auth().currentUser.email;
-    const options = {
-        method: 'GET',
-        url: '/pro/g/',
-        params: {email: e},
-    }
+export const getUserData = async () => {
+    return new Promise((resolve, reject) => {
+        const e = fire.auth().currentUser.email;
+        const options = {
+            method: 'GET',
+            url: '/pro/g/',
+            params: {email: e},
+        }
 
-    axios.request(options).then((response) => {
-        console.log(response.data);
-        return response.data;
+        axios.request(options).then((response) => {
+            console.log(response.data);
+            resolve(response.data);
 
-    }).catch((error) => {
-        console.error(error);
+        }).catch((error) => {
+            reject(error);
+        });
+
     });
-}
+};
