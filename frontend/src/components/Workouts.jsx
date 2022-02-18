@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getWorkoutData } from '../services/workoutServices';
+import '../css/workout.css';
 
 function Workouts() {
 
