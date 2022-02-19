@@ -14,6 +14,10 @@ function Profile() {
 
         fetchData();
       }, []);
+
+      const deleteWorkout = (w_id, email) => {
+          console.log("workout deletion request");
+      }
  
     return (
         <div className="App">
@@ -42,6 +46,35 @@ function Profile() {
                                 </tr>
                             </tbody>
                         </table>
+
+                        <h3 className="words">Your Workouts:</h3>
+                        {userData.userWorkouts.map((workout) => (
+                            <>
+                                <div className="card workout-card bg-transparent border-primary words">
+                                    <div className="card-header bg-transparent border-primary">
+                                        <b><h3>{workout.name}</h3></b>
+                                        <h6>by {workout.email}</h6>
+                                    </div>
+                                    <div className="card-body bg-transparent border-primary">
+                                        <p>{workout.description}</p>
+                                        Time: {workout.time} min  |  Difficulty: {workout.difficulty}/10
+                                    </div>
+
+                                    <div className="card-footer bg-transparent border-primary">
+                                        <ul className="list-group list-group-flush bg-transparent border-success">
+                                            {workout.exercises.map((exercise) => (
+                                                <li className="list-group-item bg-transparent border-success"><div className="words">{exercise.exerciseName}: {exercise.sets} sets of {exercise.reps} reps.</div></li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <button onClick={() => deleteWorkout(workout.w_id, workout.email)} className="btn btn-danger active">
+                                    Delete this Workout
+                                </button>
+                                <br/>
+                                <br/>
+                            </>
+                        ))}
                     </>
                 )
             }
