@@ -85,4 +85,46 @@ workoutRouter.post('/p/', (req, res) => {
     });
 });
 
+workoutRouter.delete('/d/', async (req, res) => {
+
+    try{
+        await deleteWorkout();
+        return true;
+    }
+    catch(err) {
+        console.log(err);
+    }
+
+    async function deleteWorkout(){
+        //delete from workout table
+        pool.getConnection((err, connection) => {
+            if (err){ throw err; }
+            var qry = "DELETE FROM Workouts WHERE w_id = '"+req.query.w_id+"'";
+            connection.query(qry, (err, result) => {
+                connection.release();
+                if (err) {
+                    console.log(err);
+                }
+                else{
+                    console.log(result);
+                }
+            });
+        });
+        //delete from exercise table
+        pool.getConnection((err, connection) => {
+            if (err){ throw err; }
+            var qry = "DELETE FROM Exercises WHERE wr_id = '"+req.query.w_id+"'";
+            connection.query(qry, (err, result) => {
+                connection.release();
+                if (err) {
+                    console.log(err);
+                }
+                else{
+                    console.log(result);
+                }
+            });
+        });
+    };
+});
+
 module.exports = workoutRouter;

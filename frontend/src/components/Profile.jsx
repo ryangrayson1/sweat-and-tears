@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getUserData } from '../services/accountServices.js';
+import { deleteWorkout } from '../services/workoutServices.js';
 import '../css/workout.css';
 
 function Profile() {
@@ -15,13 +16,12 @@ function Profile() {
         fetchData();
       }, []);
 
-      const deleteWorkout = (w_id, email) => {
-          console.log("workout deletion request");
-      }
+      const delWorkout = (w_id, email) => {
+          deleteWorkout(w_id, email);
+      };
  
     return (
         <div className="App">
-            <h1>Profile page under construction</h1>
             {!userData ? 
                 (
                     <>
@@ -68,7 +68,7 @@ function Profile() {
                                         </ul>
                                     </div>
                                 </div>
-                                <button onClick={() => deleteWorkout(workout.w_id, workout.email)} className="btn btn-danger active">
+                                <button onClick={() => delWorkout(workout.w_id, workout.email)} className="btn btn-danger active">
                                     Delete this Workout
                                 </button>
                                 <br/>

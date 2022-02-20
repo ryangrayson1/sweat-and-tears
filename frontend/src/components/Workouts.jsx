@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getWorkoutData } from '../services/workoutServices';
+import { getWorkoutData, deleteWorkout } from '../services/workoutServices';
 import '../css/workout.css';
 
 function Workouts() {
@@ -16,6 +16,10 @@ function Workouts() {
 
         fetchData();
       }, []);
+
+    const delWorkout = (w_id, email) => {
+        deleteWorkout(w_id, email);
+    };
 
     return (
         <div className="App">
@@ -51,6 +55,10 @@ function Workouts() {
                                                     ))}
                                                 </ul>
                                             </div> */}
+                                            <button onClick={() => delWorkout(workout.w_id, workout.email)} className="btn btn-danger active">
+                                                Delete this Workout
+                                            </button>
+                                            <br/>
                                         </div>
                                         <br/>
                                     </>

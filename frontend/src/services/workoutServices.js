@@ -26,4 +26,20 @@ export const getWorkoutData = async () => {
     } catch (e) {
       console.error(e);
     }
-}
+};
+
+export const deleteWorkout = async (id, email) => {
+  const sure = window.confirm("Are you sure you want to delete this workout?");
+  if (sure){
+      try {
+          await axios.delete('/wor/d/', {params:{w_id: id, w_email: email}});
+      } catch (e) {
+          console.error(e);
+      }
+  }
+  else{
+      alert("Deletion Cancelled");
+      return false;
+  }
+  return true;
+};
