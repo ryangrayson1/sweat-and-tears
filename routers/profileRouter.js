@@ -48,7 +48,7 @@ profileRouter.get('/g/', async (req, res) => {
     };
 });
 
-profileRouter.post('/p/', (req, res) => {
+profileRouter.post('/p/', async (req, res) => {
     const e = req.body.email;
     const fn = req.body.fname;
     const ln = req.body.lname;
