@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getWorkoutData, deleteWorkout } from '../services/workoutServices';
 import '../css/workout.css';
+import { like } from '../services/likeServices';
+import fire from '../fire.js';
 
 function Workouts() {
 
@@ -19,6 +21,10 @@ function Workouts() {
 
     const delWorkout = (w_id, email) => {
         deleteWorkout(w_id, email);
+    };
+
+    const likeWorkout = (w_id) => {
+        like(w_id, fire.auth().currentUser.email);
     };
 
     return (
@@ -40,7 +46,7 @@ function Workouts() {
                                     <>
                                         <div className="card workout-card bg-transparent border-primary words">
                                             <div className="card-header bg-transparent border-primary">
-                                                <b><h3>{workout.w_name}</h3></b>
+                                                <b><h3>{workout.w_name}</h3></b><button onclick={likeWorkout(workout.w_id)}>Like</button>
                                                 <h6>by {workout.email}</h6>
                                             </div>
                                             <div className="card-body bg-transparent border-primary">
