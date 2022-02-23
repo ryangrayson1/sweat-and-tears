@@ -3,23 +3,40 @@
 const workoutRouter = require('express').Router();
 const pool = require('./pool.js');
 
-workoutRouter.get('/g/', (req, res) => {
-    pool.getConnection((err, connection) => {
-        if(err) throw err;
-        console.log('connected as id ' + connection.threadId);
-        connection.query('SELECT * from Workouts', (err, rows) => {
-            connection.release() // return the connection to pool
-            
-            if (!err) {
-                res.send(rows);
-            } else {
-                console.log(err);
-            }
-  
-            //if(err) throw err
-            //console.log('The data from User table are: \n', rows);
+workoutRouter.get('/g/', async (req, res) => {
+
+    try{
+        var qry1 = "SELECT * FROM Workouts";
+        var wData = await getData(qry1);
+
+        for (const wrkout of wData) {
+            var qry3 = "SELECT * FROM Exercises WHERE wr_id = '"+wrkout.w_id+"' ORDER BY e_id";
+            var exs = await getData(qry3);
+            wrkout["exercises"] = exs;
+        }
+
+        console.log(wData);
+        res.send(wData);
+    }
+    catch(err){
+        console.log(err);
+    }
+
+    async function getData(qry) {
+        return new Promise((resolve, reject) => {
+            pool.getConnection((err, connection) => {
+                if(err) throw err;
+                connection.query(qry, (err, data) => {
+                    connection.release();
+                    if (!err) {
+                        resolve(data);
+                    } else {
+                        reject(err);
+                    }
+                });
+            });
         });
-    })
+    };
 });
 
 workoutRouter.post('/p/', (req, res) => {
