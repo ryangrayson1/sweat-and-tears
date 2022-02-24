@@ -46,7 +46,7 @@ function Workouts() {
                                     <>
                                         <div className="card workout-card bg-transparent border-primary words">
                                             <div className="card-header bg-transparent border-primary">
-                                                <b><h3>{workout.w_name}</h3></b><button onclick={likeWorkout(workout.w_id)}>Like</button>
+                                                <b><h3>{workout.w_name}</h3></b><button href="" onClick={() => likeWorkout(workout.w_id)}>Like {workout.likes}</button>
                                                 <h6>by {workout.email}</h6>
                                             </div>
                                             <div className="card-body bg-transparent border-primary">

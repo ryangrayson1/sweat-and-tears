@@ -4,7 +4,7 @@ const likeRouter = require('express').Router();
 const { executeQuery } = require('./executeQuery.js');
 
 likeRouter.post('', async (req, res) => {
-    console.log(req.body);
+    console.log(req.body.wid);
 
     try{
         var q1 = "INSERT INTO Likes VALUES('"+req.body.wid+"', '"+req.body.email+"')";
@@ -13,7 +13,7 @@ likeRouter.post('', async (req, res) => {
         var q2 = "UPDATE Workouts SET likes = likes + 1 WHERE w_id = '"+req.body.wid+"'";
         var resp2 = await executeQuery(q2);
 
-        res.send("success");
+        res.send({resp, resp2});
 
     }
     catch(e){
