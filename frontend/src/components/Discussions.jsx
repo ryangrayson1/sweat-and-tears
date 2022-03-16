@@ -9,7 +9,7 @@ function Discussions(){
     useEffect(() => {
         const fetchData = async () => {
           const data = await getDiscussions();
-          setDiscData(data);
+          setDiscData(data["Discussions"]);
         };
 
         fetchData();
@@ -24,6 +24,11 @@ function Discussions(){
             <br/>
             <h3 className="words">Welcome to the Discussions page!</h3>
 
+            <button className="btn btn-success">
+                <a className="clean" href="/create-discussion/">Create a Discussion</a>
+            </button>
+            <br/><br/>
+
             {!discData ? 
                     <h3 className="words">Loading discussions...</h3> : 
                     <>
@@ -35,18 +40,35 @@ function Discussions(){
                                     <>
                                         <div className="card workout-card bg-transparent border-primary words workout">
                                             <div className="card-header bg-transparent border-primary d-flex justify-content-between align-items-center">
-                                                <b/><h3>{disc.topic}</h3>
-                                                <h6>by {disc.u_email}</h6>
-                                                <button type="button" class="btn btn-sm btn-primary">Button</button>
+                                                <div>
+                                                    <i class="fas fa-user-alt"></i> <h3>{disc.topic}</h3>
+                                                </div>
+                                                {disc.u_email == fire.auth().currentUser.email &&
+                                                    <button onClick={() => delDiscussion(disc.id, disc.u_email)} className="btn btn-danger active del">
+                                                        Delete this Discussion
+                                                </button>}
                                             </div>
-                                            {disc.u_email == fire.auth().currentUser.email &&
-                                            <button onClick={() => delDiscussion(disc.id, disc.u_email)} className="btn btn-danger active del">
-                                                Delete this Discussion
-                                            </button>}
+                                            <div className="card-body bg-transparent border-primary">
+                                                <h6>by {disc.u_email}</h6>
+                                            </div>
+
 
                                             <div className="card-body bg-transparent border-primary">
-                                                <h6>{disc.content}</h6>
+                                                <h3>{disc.content}</h3>
                                             </div>
+
+                                            {disc.followUps ? 
+                                            <div className="card-footer bg-transparent border-primary">
+                                                <ul className="list-group list-group-flush bg-transparent border-success">
+                                                    {disc.followUps.map((fu) => (
+                                                        <li className="list-group-item bg-transparent border-success"><div className="words">Follow up by {fu.u_email}: <h6>{fu.content}</h6></div></li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            :
+                                            <div className="card-footer bg-transparent border-primary">
+                                                No follow ups yet.
+                                            </div>} 
 
 
                                             <br/>

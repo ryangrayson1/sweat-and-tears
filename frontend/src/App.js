@@ -10,6 +10,7 @@ import Workouts from './components/Workouts.jsx';
 import CreateWorkout from './components/CreateWorkout.jsx';
 import Discussions from './components/Discussions.jsx';
 import Challenges from './components/Challenges.jsx';
+import CreateDiscussion from './components/CreateDiscussion.jsx';
 import './css/App.css';
 import fire from './fire.js';
 import { createNewUser } from './services/profileServices.js';
@@ -77,6 +78,7 @@ function App() {
               <Route exact path="/create-workout/" element={<CreateWorkout/>}/>
               <Route exact path="/discussions/" element={<Discussions/>}/>
               <Route exact path="/challenges/" element={<Challenges/>}/>
+              <Route exact path="/create-discussion/" element={<CreateDiscussion/>}/>
               <Route path="*" element={<Home/>}/>
             </Routes>
           </>
