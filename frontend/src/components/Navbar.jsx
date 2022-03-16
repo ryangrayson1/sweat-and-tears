@@ -13,8 +13,16 @@ function Navbar(props){
                 <a className="clean" href="/workouts/">Workouts</a>
             </button>&emsp;
 
+            <button className="btn btn-challenges active">
+                <a className="clean" href="/challenges/">Challenges</a>
+            </button>&emsp;
+
             <button className="btn btn-outline-primary active">
                 <a className="clean" href="/home/"><h1 className="words">Sweat && Tears</h1></a>
+            </button>&emsp;
+
+            <button className="btn btn-discussions active">
+                <a className="clean" href="/discussions/">Discussions</a>
             </button>&emsp;
 
             <button className="btn btn-profile active">

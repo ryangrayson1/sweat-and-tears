@@ -8,9 +8,12 @@ import Home from './components/Home.jsx';
 import Profile from './components/Profile.jsx';
 import Workouts from './components/Workouts.jsx'; 
 import CreateWorkout from './components/CreateWorkout.jsx';
+import Discussions from './components/Discussions.jsx';
+import Challenges from './components/Challenges.jsx';
+import CreateDiscussion from './components/CreateDiscussion.jsx';
 import './css/App.css';
 import fire from './fire.js';
-import { createNewUser } from './services/accountServices.js';
+import { createNewUser } from './services/profileServices.js';
 
 function App() {
   document.body.style = 'background: aliceblue;';
@@ -73,6 +76,9 @@ function App() {
               <Route exact path="/profile/" element={<Profile/>}/>
               <Route exact path="/workouts/" element={<Workouts/>}/>
               <Route exact path="/create-workout/" element={<CreateWorkout/>}/>
+              <Route exact path="/discussions/" element={<Discussions/>}/>
+              <Route exact path="/challenges/" element={<Challenges/>}/>
+              <Route exact path="/create-discussion/" element={<CreateDiscussion/>}/>
               <Route path="*" element={<Home/>}/>
             </Routes>
           </>

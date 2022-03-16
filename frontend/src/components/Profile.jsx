@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getUserData } from '../services/accountServices.js';
+import { getUserData } from '../services/profileServices.js';
 import { deleteWorkout } from '../services/workoutServices.js';
 import '../css/workout.css';
 
@@ -50,10 +50,14 @@ function Profile() {
                         <h3 className="words">Your Workouts:</h3>
                         {userData.userWorkouts.map((workout) => (
                             <>
-                                <div className="card workout-card bg-transparent border-primary words">
+                                <div className="card workout-card bg-transparent border-primary words workout">
                                     <div className="card-header bg-transparent border-primary">
                                         <b><h3>{workout.name}</h3></b>
-                                        <h6>by {workout.email}</h6>
+                                        <h6>by {workout.u_email}</h6>
+                                    </div>
+                                    <div className="card-body bg-transparent border-primary">
+                                        <p>{workout.description}</p>
+                                        Likes: {workout.likes}
                                     </div>
                                     <div className="card-body bg-transparent border-primary">
                                         <p>{workout.description}</p>
@@ -63,15 +67,15 @@ function Profile() {
                                     <div className="card-footer bg-transparent border-primary">
                                         <ul className="list-group list-group-flush bg-transparent border-success">
                                             {workout.exercises.map((exercise) => (
-                                                <li className="list-group-item bg-transparent border-success"><div className="words">{exercise.e_name}: {exercise.sets} sets of {exercise.reps} reps.</div></li>
+                                                <li className="list-group-item bg-transparent border-success"><div className="words">{exercise.name}: {exercise.sets} sets of {exercise.reps} reps.</div></li>
                                             ))}
                                         </ul>
                                     </div>
-                                </div>
-                                <button onClick={() => delWorkout(workout.w_id, workout.email)} className="btn btn-danger active">
+                                <button onClick={() => delWorkout(workout.id, workout.u_email)} className="btn btn-danger active del">
                                     Delete this Workout
                                 </button>
                                 <br/>
+                                </div>
                                 <br/>
                             </>
                         ))}
