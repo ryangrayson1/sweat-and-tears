@@ -19,8 +19,9 @@ profileRouter.get('/g/', async (req, res) => {
         allData["userWorkouts"] = userWorkouts;
 
         for (const wrkout of allData.userWorkouts) {
-            var qry3 = "SELECT * FROM Exercises WHERE w_id = '"+wrkout.w_id+"' ORDER BY id";
+            var qry3 = "SELECT * FROM Exercises WHERE w_id = '"+wrkout.id+"' ORDER BY id";
             var exs = await getData(qry3);
+            console.log(exs)
             wrkout["exercises"] = exs;
         }
 

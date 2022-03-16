@@ -50,10 +50,14 @@ function Profile() {
                         <h3 className="words">Your Workouts:</h3>
                         {userData.userWorkouts.map((workout) => (
                             <>
-                                <div className="card workout-card bg-transparent border-primary words">
+                                <div className="card workout-card bg-transparent border-primary words workout">
                                     <div className="card-header bg-transparent border-primary">
                                         <b><h3>{workout.name}</h3></b>
                                         <h6>by {workout.u_email}</h6>
+                                    </div>
+                                    <div className="card-body bg-transparent border-primary">
+                                        <p>{workout.description}</p>
+                                        Likes: {workout.likes}
                                     </div>
                                     <div className="card-body bg-transparent border-primary">
                                         <p>{workout.description}</p>
@@ -67,7 +71,7 @@ function Profile() {
                                             ))}
                                         </ul>
                                     </div>
-                                <button onClick={() => delWorkout(workout.w_id, workout.u_email)} className="btn btn-danger active">
+                                <button onClick={() => delWorkout(workout.id, workout.u_email)} className="btn btn-danger active del">
                                     Delete this Workout
                                 </button>
                                 <br/>
