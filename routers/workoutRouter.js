@@ -10,7 +10,7 @@ workoutRouter.get('/g/', async (req, res) => {
         var wData = await getData(qry1);
 
         for (const wrkout of wData) {
-            var qry3 = "SELECT * FROM Exercises WHERE wr_id = '"+wrkout.w_id+"' ORDER BY e_id";
+            var qry3 = "SELECT * FROM Exercises WHERE w_id = '"+wrkout.id+"' ORDER BY id";
             var exs = await getData(qry3);
             wrkout["exercises"] = exs;
         }
@@ -69,7 +69,7 @@ workoutRouter.post('/p/', (req, res) => {
                 
                 console.log(req.body);
                 req.body.exercises.forEach((ex) => {
-                    var qry = "INSERT INTO Exercises (wr_id, e_name, sets, reps) VALUES ('"+id+"', '"+ex.exerciseName+"', '"+ex.sets+"', '"+ex.reps+"')";
+                    var qry = "INSERT INTO Exercises (w_id, e_name, sets, reps) VALUES ('"+id+"', '"+ex.exerciseName+"', '"+ex.sets+"', '"+ex.reps+"')";
                     connection.query(qry, (err, rows) => {
                         if (!err) {
                             // res.send(rows);
@@ -116,7 +116,7 @@ workoutRouter.delete('/d/', async (req, res) => {
         //delete from workout table
         pool.getConnection((err, connection) => {
             if (err){ throw err; }
-            var qry = "DELETE FROM Workouts WHERE w_id = '"+req.query.w_id+"'";
+            var qry = "DELETE FROM Workouts WHERE id = '"+req.query.w_id+"'";
             connection.query(qry, (err, result) => {
                 connection.release();
                 if (err) {
@@ -130,7 +130,7 @@ workoutRouter.delete('/d/', async (req, res) => {
         //delete from exercise table
         pool.getConnection((err, connection) => {
             if (err){ throw err; }
-            var qry = "DELETE FROM Exercises WHERE wr_id = '"+req.query.w_id+"'";
+            var qry = "DELETE FROM Exercises WHERE w_id = '"+req.query.w_id+"'";
             connection.query(qry, (err, result) => {
                 connection.release();
                 if (err) {

@@ -14,12 +14,12 @@ profileRouter.get('/g/', async (req, res) => {
         var userData = await getData(qry1);
         allData["userData"] = userData;
 
-        var qry2 = "SELECT * FROM Workouts WHERE email = '"+eml+"' ORDER BY w_id DESC";
+        var qry2 = "SELECT * FROM Workouts WHERE u_email = '"+eml+"' ORDER BY id DESC";
         var userWorkouts = await getData(qry2);
         allData["userWorkouts"] = userWorkouts;
 
         for (const wrkout of allData.userWorkouts) {
-            var qry3 = "SELECT * FROM Exercises WHERE wr_id = '"+wrkout.w_id+"' ORDER BY e_id";
+            var qry3 = "SELECT * FROM Exercises WHERE w_id = '"+wrkout.w_id+"' ORDER BY id";
             var exs = await getData(qry3);
             wrkout["exercises"] = exs;
         }
