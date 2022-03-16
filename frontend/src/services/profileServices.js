@@ -9,15 +9,25 @@ export const createNewUser = async (fname, lname, email, pword) => {
     }
     try{
         const user = await fire.auth().createUserWithEmailAndPassword(email, pword);
-        console.log("user " + user.uid + " successfully created");
+        console.log(user);
         const res = await axios.post('/pro/p/', userData);
         if (res){
             alert("account successfully created");
         }
-        return res;
+        console.log("user " + user.uid + " successfully created");
+        return "success";
     } catch (error) {
-        console.log(error);
-        alert("account already exists. please sign in");
+        console.log(error.message);
+        var errname = error.message;
+
+        if (errname === "Firebase: The email address is already in use by another account. (auth/email-already-in-use).") {
+            alert("Account already exists. Please sign in.")
+            return "exists";
+        }
+        else {
+            alert("There was an error. Account creation Failed. Please check that you have entered a valid email.");
+            return "failed";
+        }
     }
 };
 

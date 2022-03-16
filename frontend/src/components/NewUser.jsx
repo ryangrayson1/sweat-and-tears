@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { createNewUser } from '../services/profileServices.js';
 
 function NewUser(props){
     const [firstName, setFirstName] = useState();
@@ -9,12 +10,26 @@ function NewUser(props){
 
     const nav = useNavigate();
 
+    const createUser = (fname, lname, email, pword) => {
+        console.log(fname);
+        console.log(lname);
+        console.log(email);
+        console.log(pword);
+        return createNewUser(fname, lname, email, pword);
+      };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (firstName && lastName && email && password) {
-            if (props.createUserProp(firstName, lastName, email, password)){
+            if (createUser(firstName, lastName, email, password) === "success"){
                 nav("/home/");
             }
+            else if (createUser(firstName, lastName, email, password) === "exists"){
+                nav("/login/");
+            }
+        }
+        else {
+            alert("please fill out all fields");
         }
     }
 

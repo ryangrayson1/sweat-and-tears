@@ -13,7 +13,6 @@ import Challenges from './components/Challenges.jsx';
 import CreateDiscussion from './components/CreateDiscussion.jsx';
 import './css/App.css';
 import fire from './fire.js';
-import { createNewUser } from './services/profileServices.js';
 
 function App() {
   document.body.style = 'background: aliceblue;';
@@ -24,26 +23,16 @@ function App() {
     return user ? setLoggedIn(true) : setLoggedIn(false);
   });
 
-  const createUser = (fname, lname, email, pword) => {
-    console.log(fname);
-    console.log(lname);
-    console.log(email);
-    console.log(pword);
-    try {
-      createNewUser(fname, lname, email, pword);
-      return true;
-    } catch (e) {
-      console.error(e);
-      alert("account creation failed");
-    }
-  };
-
   const login = (email, password) => {
-      return fire.auth().signInWithEmailAndPassword(email, password)
-      .catch((error) => {
+    try{
+      fire.auth().signInWithEmailAndPassword(email, password);
+      return "success";
+    }
+    catch (error) {
         console.error('Incorrect username or password');
-        alert("incorrect username or password");
-    });
+        alert("incorrect email or password");
+        return "failed";
+    };
   };
 
   const logout = () => {
@@ -62,7 +51,7 @@ function App() {
             <h1 className="display-1">Sweat && Tears</h1>
             <Routes>
               <Route exact path="/" element={<Login loginProp={login} li={loggedIn}/>}/>
-              <Route exact path="/new-user/" element={<NewUser createUserProp={createUser}/>}/>
+              <Route exact path="/new-user/" element={<NewUser/>}/>
               <Route path="*" element={<Login loginProp={login} li={loggedIn}/>}/>
             </Routes>
           </>

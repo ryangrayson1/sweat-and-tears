@@ -10,10 +10,9 @@ function Login(props){
     const handleSubmit = (e) => {
         e.preventDefault();
         if (email && password) {
-            if (props.loginProp(email, password)){
+            if (props.loginProp(email, password) === "success") {
                 nav("/home/");
             }
-
         }
     }
     return (
