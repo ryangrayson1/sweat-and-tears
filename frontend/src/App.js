@@ -23,18 +23,6 @@ function App() {
     return user ? setLoggedIn(true) : setLoggedIn(false);
   });
 
-  const login = (email, password) => {
-    try{
-      fire.auth().signInWithEmailAndPassword(email, password);
-      return "success";
-    }
-    catch (error) {
-        console.error('Incorrect username or password');
-        alert("incorrect email or password");
-        return "failed";
-    };
-  };
-
   const logout = () => {
     fire.auth().signOut();
     setLoggedIn(false);
@@ -50,9 +38,8 @@ function App() {
           <>
             <h1 className="display-1">Sweat && Tears</h1>
             <Routes>
-              <Route exact path="/" element={<Login loginProp={login} li={loggedIn}/>}/>
+              <Route path="*" element={<Login/>}/>
               <Route exact path="/new-user/" element={<NewUser/>}/>
-              <Route path="*" element={<Login loginProp={login} li={loggedIn}/>}/>
             </Routes>
           </>
         )

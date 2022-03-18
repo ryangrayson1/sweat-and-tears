@@ -10,22 +10,20 @@ function NewUser(props){
 
     const nav = useNavigate();
 
-    const createUser = (fname, lname, email, pword) => {
-        console.log(fname);
-        console.log(lname);
-        console.log(email);
-        console.log(pword);
-        return createNewUser(fname, lname, email, pword);
-      };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         if (firstName && lastName && email && password) {
-            if (createUser(firstName, lastName, email, password) === "success"){
+            if (createNewUser(firstName, lastName, email, password) === "success"){
+                alert("Account successfully created!");
                 nav("/home/");
             }
-            else if (createUser(firstName, lastName, email, password) === "exists"){
+            else if (createNewUser(firstName, lastName, email, password) === "exists"){
+                alert("Account already exists. Please sign in.");
                 nav("/login/");
+            }
+            else{
+                alert("Account creation Failed. Please check that you have entered a valid email.");
             }
         }
         else {

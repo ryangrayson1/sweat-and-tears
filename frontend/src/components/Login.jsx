@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { loginAttempt } from '../services/profileServices.js';
 
 function Login(props){
     const [email, setEmail] = useState();
@@ -7,14 +8,22 @@ function Login(props){
 
     const nav = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         if (email && password) {
-            if (props.loginProp(email, password) === "success") {
+            if (loginAttempt(email, password) === "success") {
                 nav("/home/");
             }
+            else{
+                alert("Incorrect email or password");
+            }
+        }
+        else{
+            alert("please fill out all fields");
         }
     }
+
     return (
     <div>    
         <h2 className="words">
