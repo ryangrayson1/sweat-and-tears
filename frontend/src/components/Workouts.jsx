@@ -64,7 +64,7 @@ function Workouts() {
                                                     ))}
                                                 </ul>
                                             </div>
-                                            {workout.u_email == fire.auth().currentUser.email &&
+                                            {workout.u_email === fire.auth().currentUser.email &&
                                             <button onClick={() => delWorkout(workout.id, workout.u_email)} className="btn btn-danger active del">
                                                 Delete this Workout
                                             </button>}

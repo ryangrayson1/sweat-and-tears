@@ -51,7 +51,7 @@ workoutRouter.post('/p/', (req, res) => {
         console.log('connected as id ' + connection.threadId);
         
         let step1 = new Promise( (resolve, reject) => { //inserting new workout into database
-            var qry = "INSERT INTO Workouts (email, w_name, description, time, difficulty) VALUES ('"+e+"', '"+n+"', '"+d+"', '"+t+"', '"+di+"')";
+            var qry = "INSERT INTO Workouts (u_email, name, description, time, difficulty) VALUES ('"+e+"', '"+n+"', '"+d+"', '"+t+"', '"+di+"')";
             connection.query(qry, (err, rows) => {
                 if (!err) {
                     //res.send(rows);

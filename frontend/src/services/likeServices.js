@@ -3,7 +3,7 @@ import axios from 'axios';
 export const like = async (wid, email) => {
     console.log(wid)
     try{
-        const resp = await axios.post('/lik/', {wid: wid, email: email});
+        const resp = await axios.post('/lik/p/', {wid: wid, email: email});
         console.log(resp);
         return true;
     }

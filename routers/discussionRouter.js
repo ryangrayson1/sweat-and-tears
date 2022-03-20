@@ -27,4 +27,18 @@ discussionRouter.get('/g/', async (req, res) => {
 
 });
 
+discussionRouter.post('/p/', async (req, res) => {
+
+    try{
+        var q = "INSERT INTO Discussions (u_email, topic, content) VALUES ('"+req.body.email+"','"+req.body.topic+"', '"+req.body.content+"')";
+        var insertDisc = await executeQuery(q);
+        res.send(insertDisc);
+    }
+    catch(err){
+        res.send("failed");
+        console.log(err);
+    }
+
+});
+
 module.exports = discussionRouter;

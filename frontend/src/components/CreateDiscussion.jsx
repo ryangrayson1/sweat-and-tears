@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { createDiscussion } from '../services/discussionServices.js';
+import fire from '../fire.js';
 
 function CreateDiscussion(){
     const [topic, setTopic] = useState();
@@ -6,20 +8,37 @@ function CreateDiscussion(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        e.stopPropagation();
+        if (topic && content) {
+            createDiscussion(fire.auth().currentUser.email, topic, content).then((discussion) => {
+                alert("Discussion successfully posted!");
+            }).catch((error) => {
+                alert("there was an error. Please try again.")
+            });
+        }
+        else{
+            alert("please fill out all fields");
+        }
     }
     return (
         <div className="App">
             <br/><h4 className="words">Create a new Discussion</h4><br/>
             <div className="upload">
                 <div className="card border-primary text-centr" style={{backgroundColor: 'aliceblue', textAlign: 'center'}}>
-                    <div clasName="card-body">
-                        <form onSubmit={handleSubmit} style={{marginLeft: '15%', marginRight: '15%', width: '70%'}}>
-                            <input name="topic" label="Topic" variant="filled" value={topic}
+                    <div className="card-body">
+
+                        <form onSubmit={handleSubmit} className="form-inline" style={{marginLeft: '10%', marginRight: '10%', width: '80%'}}>
+                            <h6 className="words">Topic:</h6>
+                            <input className="form-control" name="topic" label="Topic" value={topic}
                                     onChange={event => setTopic(event.target.value)}></input>
-                            <textarea name="content" label="Discussion" variant="filled" value={content}
+                            <p></p>
+                            <h6 className="words">Discussion content:</h6>
+                            <textarea className="form-control" name="content" label="Discussion" value={content}
                                     onChange={event => setContent(event.target.value)}></textarea>
-                            <input type="submit" onClick={handleSubmit} className="btn btn-info"></input>
+                            <p></p>
+                            <input type="submit" value="Post Discussion" onClick={handleSubmit} className="btn btn-info"></input>
                         </form>
+                        
                     </div>
                 </div>
             </div>

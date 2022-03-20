@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.css";
 import Navbar from './components/Navbar.jsx';
@@ -17,25 +17,25 @@ import fire from './fire.js';
 function App() {
   document.body.style = 'background: aliceblue;';
 
-  fire.auth().onAuthStateChanged((user) => {
-    if (user && !loggedIn) {
-      setLoggedIn(true);
-    }
-  });
+  const [currentUser, setCurrentUser] = useState(null);
 
-  const [loggedIn, setLoggedIn] = useState(fire.auth().currentUser != null);
+  useEffect(() => {
+    fire.auth().onAuthStateChanged((user) => {
+      setCurrentUser(user);
+     })
+  }, []);
 
   const logout = () => {
     fire.auth().signOut();
-    setLoggedIn(false);
+    setCurrentUser(null);
   };
 
-  console.log("Logged In: " + loggedIn);
+  console.log("Current user: " + currentUser);
 
   return (
     <div className="App">
       <Router>
-        {!loggedIn ? 
+        {!currentUser ? 
         (
           <>
             <h1 className="display-1">Sweat && Tears</h1>

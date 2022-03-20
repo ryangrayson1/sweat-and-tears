@@ -43,7 +43,7 @@ function Discussions(){
                                                 <div>
                                                     <i class="fas fa-user-alt"></i> <h3>{disc.topic}</h3>
                                                 </div>
-                                                {disc.u_email == fire.auth().currentUser.email &&
+                                                {disc.u_email === fire.auth().currentUser.email &&
                                                     <button onClick={() => delDiscussion(disc.id, disc.u_email)} className="btn btn-danger active del">
                                                         Delete this Discussion
                                                 </button>}
