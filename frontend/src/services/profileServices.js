@@ -26,18 +26,6 @@ export const createNewUser = async (fname, lname, email, pword) => {
     }
 };
 
-export const loginAttempt = async (email, password) => {
-    try{
-      var user = await fire.auth().signInWithEmailAndPassword(email, password);
-      if (user){ 
-        return "success";
-      }
-    }
-    catch (error) {
-        return "failed";
-    };
-  };
-
 export const getUserData = async () => {
     return new Promise((resolve, reject) => {
         const e = fire.auth().currentUser.email;

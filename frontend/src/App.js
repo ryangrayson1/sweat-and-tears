@@ -17,11 +17,13 @@ import fire from './fire.js';
 function App() {
   document.body.style = 'background: aliceblue;';
 
-  const [loggedIn, setLoggedIn] = useState(false);
-
   fire.auth().onAuthStateChanged((user) => {
-    return user ? setLoggedIn(true) : setLoggedIn(false);
+    if (user && !loggedIn) {
+      setLoggedIn(true);
+    }
   });
+
+  const [loggedIn, setLoggedIn] = useState(fire.auth().currentUser != null);
 
   const logout = () => {
     fire.auth().signOut();

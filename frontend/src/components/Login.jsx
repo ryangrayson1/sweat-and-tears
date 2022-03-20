@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginAttempt } from '../services/profileServices.js';
+import fire from '../fire.js';
 
 function Login(props){
     const [email, setEmail] = useState();
@@ -11,17 +11,12 @@ function Login(props){
     const handleSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation();
-        if (email && password) {
-            if (loginAttempt(email, password) === "success") {
-                nav("/home/");
-            }
-            else{
-                alert("Incorrect email or password");
-            }
-        }
-        else{
-            alert("please fill out all fields");
-        }
+        fire.auth().signInWithEmailAndPassword(email, password)
+            .catch((error) => {
+                console.error('Incorrect username or password');
+                alert("incorrect username or password");
+        });
+        nav("/home/");
     }
 
     return (
