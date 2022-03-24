@@ -2,6 +2,7 @@
 
 const workoutRouter = require('express').Router();
 const pool = require('./pool.js');
+const { executeQuery } = require('./executeQuery.js');
 
 workoutRouter.get('/g/', async (req, res) => {
 
@@ -69,7 +70,7 @@ workoutRouter.post('/p/', (req, res) => {
                 
                 console.log(req.body);
                 req.body.exercises.forEach((ex) => {
-                    var qry = "INSERT INTO Exercises (w_id, e_name, sets, reps) VALUES ('"+id+"', '"+ex.exerciseName+"', '"+ex.sets+"', '"+ex.reps+"')";
+                    var qry = "INSERT INTO Exercises (w_id, name, sets, reps) VALUES ('"+id+"', '"+ex.exerciseName+"', '"+ex.sets+"', '"+ex.reps+"')";
                     connection.query(qry, (err, rows) => {
                         if (!err) {
                             // res.send(rows);
@@ -100,6 +101,25 @@ workoutRouter.post('/p/', (req, res) => {
             console.log(err);
         });       
     });
+});
+
+workoutRouter.post('/e/', async (req, res) => {
+    console.log(req.body);
+    try{
+        var q1 = "UPDATE Workouts SET name = '"+req.body.name+"', description = '"+req.body.description+"', difficulty = '"+req.body.difficulty+"', time = '"+req.body.time+"' WHERE id = '"+req.body.id+"'";
+        await executeQuery(q1);
+
+        for (const ex of req.body.exercises){
+            var q2 = "UPDATE Exercises SET name = '"+ex.name+"', sets = '"+ex.sets+"', reps ='"+ex.reps+"' WHERE id = '"+ex.id+"'";
+            await executeQuery(q2);
+        }
+        res.send("success");
+    }
+    catch(err) {
+        console.log(err);
+        res.send("failed");
+    }
+
 });
 
 workoutRouter.delete('/d/', async (req, res) => {

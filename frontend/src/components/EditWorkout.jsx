@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Container from '@material-ui/core/Container';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import RemoveIcon from '@material-ui/icons/Remove';
-import AddIcon from '@material-ui/icons/Add';
-import { v4 as uuidv4 } from 'uuid';
+import { editWorkout } from '../services/workoutServices.js';
 
 function EditWorkout(props){
 
@@ -21,8 +15,19 @@ function EditWorkout(props){
     const [difficulty, setDifficulty] = useState(props.difficulty);
 
     const [exercises, setExercises] = useState(props.exercises);
+
+    const handleChangeInput = (id, attr, event) => {
+        const newexercises = exercises.map(i => {
+        if(id === i.id) {
+            i[attr] = event.target.value;
+        }
+        return i;
+        });
         
-    const handleSubmit = (e) => {
+        setExercises(newexercises);
+    }
+        
+    const handleSubmit = (e, id) => {
         e.preventDefault();
         if (name.length > 75){
             alert("Workout name must be less than 75 chars");
@@ -36,9 +41,9 @@ function EditWorkout(props){
         else if (timeInMinutes > 600){
             alert("Workout time must be less than 10 hours");
         }
-        else if (name && description && timeInMinutes && difficulty && exercises && typeof name === 'string') {
-            // nav("/workouts/");
-            return 1;//editWorkout(id, name, description, timeInMinutes, difficulty, exercises, creatorEmail, creatorName);
+        else if (name && description && timeInMinutes && difficulty && exercises) {
+            editWorkout(id, name, description, timeInMinutes, difficulty, exercises);
+            props.setEditing(-1);
         }
         else{
             alert("Workout edit failed. Please check that all fields have the correct format.");
@@ -47,26 +52,38 @@ function EditWorkout(props){
 
     return(
         <div className="App">
-            <br/><h4 className="words">Edit Workout {props.w_id}</h4><br/>
+            <br/><h4 className="words">Edit Workout {name}</h4><br/>
                 <div className="card workout-card bg-transparent border-primary words workout">
                     <form>
                         <div className="card-header bg-transparent border-primary">
-                            <input type="text" value={props.name}></input>
+                            <input type="text" className="form-control thinner" label="Workout Name:" value={name}
+                            onChange={event => setName(event.target.value)}></input>
                             <h6>by {props.u_email}</h6>
                         </div>
                         <div className="card-body bg-transparent border-primary">
-                            <p>{props.description}</p>
-                            Time: {props.time} min  |  Difficulty: {props.difficulty}/10
+                            Description: <input type="text" className="form-control thinner" value={description}
+                            onChange={event => setDescription(event.target.value)}></input> 
+                            Time (minutes): <input type="text" className="form-control thinner" value={timeInMinutes}
+                            onChange={event => setTimeInMinutes(event.target.value)}></input>  
+                            Difficulty (/10): <input type="text" className="form-control thinner" value={difficulty}
+                            onChange={event => setDifficulty(event.target.value)}></input>
                         </div>
 
                         <div className="card-footer bg-transparent border-primary">
                             <ul className="list-group list-group-flush bg-transparent border-success">
-                                {props.exercises.map((exercise) => (
-                                    <li className="list-group-item bg-transparent border-success"><div className="words">{exercise.name}: {exercise.sets} sets of {exercise.reps} reps.</div></li>
+                                {exercises.map((ex, i) => (
+                                    <li className="list-group-item bg-transparent border-success"><div className="words">
+                                        <input type="text" className="form-control thinner" value={exercises[i].name}
+                                        onChange={event => handleChangeInput(ex.id, 'name', event)}></input>: 
+                                        <input type="text" className="form-control thinner" value={exercises[i].sets}
+                                        onChange={event => handleChangeInput(ex.id, 'sets', event)}></input> sets of 
+                                        <input type="text" className="form-control thinner" value={exercises[i].reps}
+                                        onChange={event => handleChangeInput(ex.id, 'reps', event)}></input> reps.
+                                    </div></li>
                                 ))}
                             </ul>
                         </div>
-                        <button onClick={handleSubmit} className="btn btn-success active">
+                        <button onClick={event => handleSubmit(event, props.w_id)} className="btn btn-success active">
                             Submit edits
                         </button>
                         <br/>
