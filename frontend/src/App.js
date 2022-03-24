@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.css";
 import Navbar from './components/Navbar.jsx';
@@ -13,57 +13,35 @@ import Challenges from './components/Challenges.jsx';
 import CreateDiscussion from './components/CreateDiscussion.jsx';
 import './css/App.css';
 import fire from './fire.js';
-import { createNewUser } from './services/profileServices.js';
 
 function App() {
   document.body.style = 'background: aliceblue;';
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
-  fire.auth().onAuthStateChanged((user) => {
-    return user ? setLoggedIn(true) : setLoggedIn(false);
-  });
-
-  const createUser = (fname, lname, email, pword) => {
-    console.log(fname);
-    console.log(lname);
-    console.log(email);
-    console.log(pword);
-    try {
-      createNewUser(fname, lname, email, pword);
-      return true;
-    } catch (e) {
-      console.error(e);
-      alert("account creation failed");
-    }
-  };
-
-  const login = (email, password) => {
-      return fire.auth().signInWithEmailAndPassword(email, password)
-      .catch((error) => {
-        console.error('Incorrect username or password');
-        alert("incorrect username or password");
-    });
-  };
+  useEffect(() => {
+    fire.auth().onAuthStateChanged((user) => {
+      setCurrentUser(user);
+     })
+  }, []);
 
   const logout = () => {
     fire.auth().signOut();
-    setLoggedIn(false);
+    setCurrentUser(null);
   };
 
-  console.log("Logged In: " + loggedIn);
+  console.log("Current user: " + currentUser);
 
   return (
     <div className="App">
       <Router>
-        {!loggedIn ? 
+        {!currentUser ? 
         (
           <>
             <h1 className="display-1">Sweat && Tears</h1>
             <Routes>
-              <Route exact path="/" element={<Login loginProp={login} li={loggedIn}/>}/>
-              <Route exact path="/new-user/" element={<NewUser createUserProp={createUser}/>}/>
-              <Route path="*" element={<Login loginProp={login} li={loggedIn}/>}/>
+              <Route path="*" element={<Login/>}/>
+              <Route exact path="/new-user/" element={<NewUser/>}/>
             </Routes>
           </>
         )

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { enterNewUser } from '../services/profileServices.js';
+import fire from '../fire.js';
 
 function NewUser(props){
     const [firstName, setFirstName] = useState();
@@ -9,12 +11,29 @@ function NewUser(props){
 
     const nav = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const createNewUser = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         if (firstName && lastName && email && password) {
-            if (props.createUserProp(firstName, lastName, email, password)){
-                nav("/home/");
-            }
+
+            fire.auth().createUserWithEmailAndPassword(email, password).then((user) => {
+                console.log(user);
+                enterNewUser(firstName, lastName, email);
+                alert("Account successfully created!");
+                nav("/home/");   
+            }).catch((error) => {
+                console.log(error.message);
+                if (error.message === "Firebase: The email address is already in use by another account. (auth/email-already-in-use).") {
+                    alert("Account already exists. Please sign in.");
+                    nav("/login/");
+                }
+                else{
+                    alert("Account creation Failed. Please check that you have entered a valid email.");
+                }
+            });
+        }
+        else {
+            alert("please fill out all fields");
         }
     }
 
@@ -22,7 +41,7 @@ function NewUser(props){
         <div>
             <h3>Create New Profile</h3>
 
-            <form onSubmit={handleSubmit} className="form-inline signin">
+            <form onSubmit={createNewUser} className="form-inline signin">
                 <input
                     type="text"
                     className="form-control"

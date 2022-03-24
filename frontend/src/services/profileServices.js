@@ -1,24 +1,17 @@
 import fire from '../fire.js';
 import axios from 'axios';
 
-export const createNewUser = async (fname, lname, email, pword) => {
+export const enterNewUser = (fname, lname, email) => {
     const userData = {
         email,
         fname,
         lname
     }
-    try{
-        const user = await fire.auth().createUserWithEmailAndPassword(email, pword);
-        console.log("user " + user.uid + " successfully created");
-        const res = await axios.post('/pro/p/', userData);
-        if (res){
-            alert("account successfully created");
-        }
-        return res;
-    } catch (error) {
-        console.log(error);
-        alert("account already exists. please sign in");
-    }
+    axios.post('/pro/p/', userData).then((response) => {
+        console.log(response);
+    }).catch((err) => {
+        console.error(err);
+    });
 };
 
 export const getUserData = async () => {

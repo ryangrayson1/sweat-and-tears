@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import fire from '../fire.js';
 
 function Login(props){
     const [email, setEmail] = useState();
@@ -7,15 +8,17 @@ function Login(props){
 
     const nav = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (email && password) {
-            if (props.loginProp(email, password)){
-                nav("/home/");
-            }
-
-        }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        fire.auth().signInWithEmailAndPassword(email, password)
+            .catch((error) => {
+                console.error('Incorrect username or password');
+                alert("incorrect username or password");
+        });
+        nav("/home/");
     }
+
     return (
     <div>    
         <h2 className="words">

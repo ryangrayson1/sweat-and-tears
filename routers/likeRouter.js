@@ -3,7 +3,7 @@
 const likeRouter = require('express').Router();
 const { executeQuery } = require('./executeQuery.js');
 
-likeRouter.post('', async (req, res) => {
+likeRouter.post('/p/', async (req, res) => {
     console.log(req.body);
 
     try{

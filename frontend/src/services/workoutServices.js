@@ -33,6 +33,7 @@ export const deleteWorkout = async (id, email) => {
   if (sure){
       try {
           await axios.delete('/wor/d/', {params:{w_id: id, w_email: email}});
+          alert("Workout successfully deleted. Refresh to view changes.");
       } catch (e) {
           console.error(e);
       }
@@ -43,3 +44,23 @@ export const deleteWorkout = async (id, email) => {
   }
   return true;
 };
+
+
+export const editWorkout = async (id, name, description, difficulty, time, exercises) => {
+  var data = {
+    id,
+    name,
+    description,
+    difficulty,
+    time,
+    exercises
+  }
+  console.log("HERE");
+  try{
+    await axios.post('/wor/e/', data);
+    alert("workout successfully edited!");
+  }
+  catch{
+    alert("there was an error editing this workout. changes not saved.")
+  }
+}
