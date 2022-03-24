@@ -13,7 +13,7 @@ function Login(props){
         event.stopPropagation();
         fire.auth().signInWithEmailAndPassword(email, password)
             .catch((error) => {
-                console.error('Incorrect username or password');
+                console.log(error);
                 alert("incorrect username or password");
         });
         nav("/home/");
