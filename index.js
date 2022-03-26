@@ -5,7 +5,6 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const dotenv = require('dotenv').config();
-const bodyParser = require('body-parser')
 const workoutRouter = require('./routers/workoutRouter.js');
 const profileRouter = require('./routers/profileRouter.js');
 const likeRouter = require('./routers/likeRouter.js');
