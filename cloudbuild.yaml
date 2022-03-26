@@ -15,5 +15,5 @@ steps:
     - 'CLOUD_USER=${_CLOUD_USER}'
     - 'CLOUD_USER_PWORD=${_CLOUD_USER_PWORD}'
     - 'CLOUD_DB_NAME=${_CLOUD_DB_NAME}'
-- name: node
-  args: ['start']
+- name: "gcr.io/cloud-builders/gcloud"
+  args: ["app", "deploy"]
