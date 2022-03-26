@@ -17,3 +17,5 @@ steps:
     - 'CLOUD_DB_NAME=${_CLOUD_DB_NAME}'
 - name: "gcr.io/cloud-builders/gcloud"
   args: ["app", "deploy"]
+options:
+logging: CLOUD_LOGGING_ONLY
