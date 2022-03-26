@@ -7,15 +7,4 @@ steps:
   args: ['run', 'build']
 - name: node
   entrypoint: npm
-  args: ["run", "create-env"]
-  env:
-    - 'REACT_APP_FIREBASE_API_KEY=${_REACT_APP_FIREBASE_API_KEY}'
-    - 'LOCAL_DEV=${_LOCAL_DEV}'
-    - 'CLOUD_HOST=${_CLOUD_HOST}'
-    - 'CLOUD_USER=${_CLOUD_USER}'
-    - 'CLOUD_USER_PWORD=${_CLOUD_USER_PWORD}'
-    - 'CLOUD_DB_NAME=${_CLOUD_DB_NAME}'
-- name: "gcr.io/cloud-builders/gcloud"
-  args: ["app", "deploy"]
-options:
-  logging: CLOUD_LOGGING_ONLY
+  args: ["start"]

@@ -1,1 +1,4 @@
 runtime: nodejs16
+
+env_variables:
+    LOCAL_DEV: '0'
