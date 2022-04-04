@@ -11,12 +11,20 @@ workoutRouter.get('/g/', async (req, res) => {
         var wData = await getData(qry1);
 
         for (const wrkout of wData) {
-            var qry3 = "SELECT * FROM Exercises WHERE w_id = '"+wrkout.id+"' ORDER BY id";
-            var exs = await getData(qry3);
+            var qry2 = "SELECT * FROM Exercises WHERE w_id = '"+wrkout.id+"' ORDER BY id";
+            var exs = await getData(qry2);
             wrkout["exercises"] = exs;
+
+            var qry3 = "SELECT * FROM WorkoutLikes WHERE w_id = '"+wrkout.id+"' and u_email = '"+req.query.u_email+"'";
+            var user_liked = await getData(qry3);
+            if (user_liked.length > 0){
+                wrkout["user_liked"] = true;
+            }
+            else{
+                wrkout["user_liked"] = false;
+            }
         }
 
-        console.log(wData);
         res.send(wData);
     }
     catch(err){

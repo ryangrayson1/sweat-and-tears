@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getWorkoutData, deleteWorkout } from '../services/workoutServices';
 import '../css/workout.css';
-import { like } from '../services/likeServices';
+import { like, dislike } from '../services/likeServices';
 import fire from '../fire.js';
 
 function Workouts() {
@@ -9,11 +9,12 @@ function Workouts() {
     const [searchValue, setSearchValue] = useState();
     const [filteredData, setFilteredData] = useState();
     const [workoutData, setWorkoutData] = useState(null);
-    const [likes, setLikes] = useState(0);
+
+    const [likes, setLikes] = useState(0); // to immediately update like button
 
     useEffect(() => {
         const fetchData = async () => {
-          const data = await getWorkoutData();
+          const data = await getWorkoutData(fire.auth().currentUser.email);
           setWorkoutData(data);
         };
 
@@ -27,6 +28,11 @@ function Workouts() {
     const likeWorkout = (w_id) => {
         setLikes(likes + 1);
         like(w_id, fire.auth().currentUser.email);
+    };
+
+    const unlikeWorkout = (w_id) => {
+        setLikes(likes - 1);
+        dislike(w_id, fire.auth().currentUser.email);
     };
 
     return (
@@ -45,11 +51,16 @@ function Workouts() {
                         {!searchValue ? 
                             <>
                                 {workoutData.map((workout) => (
-
                                     <>
                                         <div className="card workout-card bg-transparent border-primary words workout">
                                             <div className="card-header bg-transparent border-primary">
-                                                <b><h3>{workout.name}</h3></b><button href="" onClick={() => likeWorkout(workout.id)}>Like {workout.likes}</button>
+                                                
+                                                <b><h3>{workout.name}</h3></b>
+
+                                                {workout.user_liked ?
+                                                    <button className="btn-success" onClick={() => unlikeWorkout(workout.id)}>Liked {workout.likes}</button> :
+                                                    <button className="btn-ouline-success" onClick={() => likeWorkout(workout.id)}>Like {workout.likes}</button>}
+
                                                 <h6>by {workout.u_email}</h6>
                                             </div>
                                             <div className="card-body bg-transparent border-primary">
