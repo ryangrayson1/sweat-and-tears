@@ -10,15 +10,22 @@ function Workouts() {
     const [filteredData, setFilteredData] = useState();
     const [workoutData, setWorkoutData] = useState(null);
 
-    const [likes, setLikes] = useState(0); // to immediately update like button
+    const [likes, setLikes] = useState(); // to immediately update like button
+
+    const [l, setL] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
           const data = await getWorkoutData(fire.auth().currentUser.email);
           setWorkoutData(data);
+          var liked = {}
+            for (const w of data){
+                liked[w.id] = [w.user_liked, w.likes];
+            }
+            setLikes(liked);
         };
-
         fetchData();
+        
       }, []);
 
     const delWorkout = (w_id, email) => {
@@ -26,12 +33,18 @@ function Workouts() {
     };
 
     const likeWorkout = (w_id) => {
-        setLikes(likes + 1);
+        setL(l + 1);
+        var newlikes = likes;
+        newlikes[w_id] = [true, likes[w_id][1] + 1];
+        setLikes(newlikes);
         like(w_id, fire.auth().currentUser.email);
     };
 
     const unlikeWorkout = (w_id) => {
-        setLikes(likes - 1);
+        setL(l - 1);
+        var newlikes = likes;
+        newlikes[w_id] = [false, likes[w_id][1] - 1];
+        setLikes(newlikes);
         dislike(w_id, fire.auth().currentUser.email);
     };
 
@@ -57,9 +70,11 @@ function Workouts() {
                                                 
                                                 <b><h3>{workout.name}</h3></b>
 
-                                                {workout.user_liked ?
-                                                    <button className="btn-success" onClick={() => unlikeWorkout(workout.id)}>Liked {workout.likes}</button> :
-                                                    <button className="btn-ouline-success" onClick={() => likeWorkout(workout.id)}>Like {workout.likes}</button>}
+                                                {likes && 
+                                                (likes[workout.id][0] ?
+                                                    <button className="btn-success" onClick={() => unlikeWorkout(workout.id)}>Liked {likes[workout.id][1]}</button> :
+                                                    <button className="btn-ouline-success" onClick={() => likeWorkout(workout.id)}>Like {likes[workout.id][1]}</button>)
+                                                }
 
                                                 <h6>by {workout.u_email}</h6>
                                             </div>

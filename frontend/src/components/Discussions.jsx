@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { getDiscussions } from '../services/discussionServices.js';
+import { getDiscussions, voteDisc } from '../services/discussionServices.js';
 import fire from '../fire.js';
 
 function Discussions(){
     const [discData, setDiscData] = useState(null);
     const [searchValue, setSearchValue] = useState();
 
+    const [votes, setVotes] = useState()
+    const [voteUpdate, setVoteUpdate] = useState(0);
+
     useEffect(() => {
         const fetchData = async () => {
-          const data = await getDiscussions();
+          const data = await getDiscussions(fire.auth().currentUser.email);
           setDiscData(data["Discussions"]);
+
+          var uservotes = {}
+          for (const d of data["Discussions"]){
+              uservotes[d.id] = [d.user_vote, d.votes];
+          }
+
+          setVotes(uservotes);
         };
 
         fetchData();
@@ -18,6 +28,36 @@ function Discussions(){
       const delDiscussion = () => {
           return 0;
       }
+
+      const upvote = (d_id) => {
+        if (votes[d_id][0] === 1){
+            return;
+        }
+        setVoteUpdate(voteUpdate + 1);
+        var newvotes = votes;
+        var toadd = 1;
+        if (votes[d_id][0] === -1){
+            toadd = 2;
+        }
+        newvotes[d_id] = [1, votes[d_id][1] + toadd];
+        setVotes(newvotes);
+        voteDisc(d_id, fire.auth().currentUser.email, toadd);
+      };
+
+      const downvote = (d_id) => {
+        if (votes[d_id][0] === -1) {
+            return;
+        }
+        setVoteUpdate(voteUpdate - 1);
+        var newvotes = votes;
+        var toadd = -1
+        if (votes[d_id][0] == 1) {
+            toadd = -2;
+        }
+        newvotes[d_id] = [-1, votes[d_id][1] + toadd];
+        setVotes(newvotes);
+        voteDisc(d_id, fire.auth().currentUser.email, toadd);
+    };
 
     return(
         <div className="App">
@@ -38,6 +78,29 @@ function Discussions(){
                                 {discData.map((disc) => (
 
                                     <>
+                                        <div>
+                                            {votes && 
+                                                <>
+                                                {votes[disc.id][0] == -1 ?
+                                                <button className="btn-danger" onClick={() => downvote(disc.id)}>
+                                                    - <div hidden>{voteUpdate}</div>
+                                                </button> : 
+                                                <button className="btn-outline-danger" onClick={() => downvote(disc.id)}>
+                                                    - <div hidden>{voteUpdate}</div>
+                                                </button>}
+                                                &emsp;
+                                                <span>{votes[disc.id][1]}</span>
+                                                &emsp;
+                                                {votes[disc.id][0] == 1 ? 
+                                                <button className="btn-success" onClick={() => upvote(disc.id)}>
+                                                    + <div hidden>{voteUpdate}</div>
+                                                </button> :
+                                                <button className="btn-outline-success" onClick={() => upvote(disc.id)}>
+                                                    + <div hidden>{voteUpdate}</div>
+                                                </button>}
+                                                </>
+                                            }
+                                        </div>
                                         <div className="card workout-card bg-transparent border-primary words workout">
                                             <div className="card-header bg-transparent border-primary d-flex justify-content-between align-items-center">
                                                 <div>
@@ -75,7 +138,6 @@ function Discussions(){
                                         </div>
                                         <br/>
                                     </>
-
                                 ))}
                             </> : 
 

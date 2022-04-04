@@ -18,9 +18,9 @@ export const createDiscussion = async (email, topic, content) => {
     });
 };
 
-export const getDiscussions = async () => {
+export const getDiscussions = async (u_email) => {
     return new Promise((resolve, reject) => {
-        axios.get(local + '/dis/g/').then((response) => {
+        axios.get(local + '/dis/g/', {params: {u_email}}).then((response) => {
             console.log(response.data);
             resolve(response.data);
 
@@ -29,3 +29,19 @@ export const getDiscussions = async () => {
         });
     });
 };
+
+export const voteDisc = async (d_id, u_email, vote) => {
+    return new Promise((resolve, reject) => {
+        var data = {
+            d_id,
+            u_email,
+            vote
+        }
+        axios.post(local + '/dis/p/v/', data).then((response) => {
+            resolve(response.data);
+
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+}

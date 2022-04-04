@@ -60,9 +60,9 @@ export const editWorkout = async (id, name, description, difficulty, time, exerc
   console.log("HERE");
   try{
     await axios.post(local + '/wor/e/', data);
-    alert("workout successfully edited!");
+    alert("Workout successfully edited! Refresh to view changes.");
   }
   catch{
-    alert("there was an error editing this workout. changes not saved.")
+    alert("There was an error editing this workout. Changes not saved.")
   }
 }
