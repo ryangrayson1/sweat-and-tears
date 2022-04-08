@@ -64,3 +64,29 @@ export const deleteDisc = async (id) => {
     }
     return true;
   };
+
+export const createFollowUp = async (d_id, u_email, content) => {
+    var data = {
+        d_id,
+        u_email,
+        content
+    }
+    console.log("content*   " + content + "   *content");
+    if (content !== "" && content !== null){
+        axios.post('/dis/p/f/', data).then((response) => {
+            console.log(response);
+            if (response.data === "failed"){
+                alert("You cannot create a duplicate follow up.");
+            }
+            else {
+                alert("Follow up successfully added. Refresh to view changes.");
+            }
+        }).catch((error) => {
+            alert("Follow up creation failed. Please try again.");
+            console.error(error);
+        });
+    }
+    else {
+        alert("Follow up creation failed. You cannot write an empy follow up.");
+    }
+};

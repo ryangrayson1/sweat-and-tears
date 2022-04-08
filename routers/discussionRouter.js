@@ -84,12 +84,26 @@ module.exports = discussionRouter;
 
 discussionRouter.delete('/d/', async (req, res) => {
     try{
-        q1 = "DELETE FROM Discussions WHERE id = '"+req.query.d_id+"'";
+        var q1 = "DELETE FROM Discussions WHERE id = '"+req.query.d_id+"'";
         resp = await executeQuery(q1);
         res.send(resp);
     }
     catch (err) {
         console.log(err);
         res.send(err);
+    }
+});
+
+discussionRouter.post('/p/f/', async (req, res) => {
+    try{
+        var q = "INSERT INTO DiscFollowUps (d_id, u_email, content) VALUES ('"+req.body.d_id+"', '"+req.body.u_email+"', '"+req.body.content+"')";
+        var insertFollowUp = await executeQuery(q);
+        res.send(insertFollowUp);
+        return "success";
+    }
+    catch(err){
+        res.send("failed");
+        console.log(err);
+        return "failed";
     }
 });

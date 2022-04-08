@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import fire from '../fire.js';
 
-function Login(props){
+function Login(){
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
 

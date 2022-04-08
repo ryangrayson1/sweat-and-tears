@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getDiscussions, voteDisc, deleteDisc } from '../services/discussionServices.js';
+import { getDiscussions, voteDisc, deleteDisc, createFollowUp } from '../services/discussionServices.js';
 import fire from '../fire.js';
 
 function Discussions(){
@@ -8,6 +8,9 @@ function Discussions(){
 
     const [votes, setVotes] = useState()
     const [voteUpdate, setVoteUpdate] = useState(0);
+
+    const [followingUp, setFollowingUp] = useState();
+    const [followUpContent, setFollowUpContent] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,6 +62,10 @@ function Discussions(){
         voteDisc(d_id, fire.auth().currentUser.email, toadd);
     };
 
+    const writeFollowUp = (d_id) => {
+        createFollowUp(d_id, fire.auth().currentUser.email, followUpContent);
+    }
+
     return(
         <div className="App">
             <br/>
@@ -102,38 +109,59 @@ function Discussions(){
                                             }
                                         </div>
                                         <div className="card workout-card bg-transparent border-primary words workout">
-                                            <div className="card-header bg-transparent border-primary d-flex justify-content-between align-items-center">
+                                            <div className="card-header bg-transparent border-primary align-items-center">
                                                 <div>
-                                                    <i class="fas fa-user-alt"></i> <h3>{disc.topic}</h3>
+                                                    <i className="fas fa-user-alt"></i> <h3>{disc.topic}</h3>
                                                 </div>
+                                                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                                                <div>
+                                                    by {disc.u_email}
+                                                </div>
+                                                <br/>
                                                 {disc.u_email === fire.auth().currentUser.email &&
                                                     <button onClick={() => delDiscussion(disc.id)} className="btn btn-danger active del">
                                                         Delete this Discussion
-                                                </button>}
+                                                    </button>}
                                             </div>
-                                            <div className="card-body bg-transparent border-primary">
-                                                <h6>by {disc.u_email}</h6>
-                                            </div>
-
 
                                             <div className="card-body bg-transparent border-primary">
                                                 <h3>{disc.content}</h3>
                                             </div>
-
-                                            {disc.followUps ? 
                                             <div className="card-footer bg-transparent border-primary">
+                                            {!followingUp &&
+                                            <button className="btn btn-info" onClick={() => setFollowingUp(disc.id)}>
+                                                    <h6 className="clean">Write a Follow-Up</h6>
+                                            </button>}
+                                            <br/>
+                                            {followingUp === disc.id &&
+                                                <form>
+                                                    Follow up content:
+                                                    <textarea style={{width: "90%"}} value={followUpContent} onChange={(e) => setFollowUpContent(e.target.value)}/>
+                                                    <br/>
+                                                    <input type="submit" className="btn btn-success" value="Post" onClick={() => writeFollowUp(disc.id)}/>
+                                                </form>
+                                            }
+                                            <br/>
+                                            {disc.followUps.length !== 0 ?
+                                                <>
                                                 <ul className="list-group list-group-flush bg-transparent border-success">
+                                                    Follow Ups:
                                                     {disc.followUps.map((fu) => (
-                                                        <li className="list-group-item bg-transparent border-success"><div className="words">Follow up by {fu.u_email}: <h6>{fu.content}</h6></div></li>
+                                                        <>
+                                                        <div className="card workout-card bg-transparent border-primary words workout">
+                                                            <li className="list-group-item bg-transparent border-success"><div className="words">Follow up by {fu.u_email}: <h6>{fu.content}</h6></div></li>
+                                                        </div>
+                                                        <br/>
+                                                        </>
                                                     ))}
                                                 </ul>
+                                                </>
+                                            :   <>
+                                                    No Follow Ups yet.
+                                                    <br/>
+                                                </>
+                                            } 
                                             </div>
-                                            :
-                                            <div className="card-footer bg-transparent border-primary">
-                                                No follow ups yet.
-                                            </div>} 
-
-
                                             <br/>
                                         </div>
                                         <br/>

@@ -16,7 +16,9 @@ import fire from './fire.js';
 
 function App() {
   document.body.style = 'background: aliceblue;';
+
   const [currentUser, setCurrentUser] = useState(fire.auth().currentUser);
+
   useEffect(() => {
     fire.auth().onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -33,12 +35,12 @@ function App() {
   return (
     <div className="App">
       <Router>
-        {!currentUser ? 
+        {!fire.auth().currentUser ? 
         (
           <>
             <h1 className="display-1">Sweat && Tears</h1>
             <Routes>
-              <Route path="*" element={<Login setCurrentUser={setCurrentUser}/>}/>
+              <Route path="*" element={<Login/>}/>
               <Route exact path="/new-user/" element={<NewUser/>}/>
             </Routes>
           </>
