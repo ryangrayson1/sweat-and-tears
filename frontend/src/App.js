@@ -11,6 +11,7 @@ import CreateWorkout from './components/CreateWorkout.jsx';
 import Discussions from './components/Discussions.jsx';
 import Challenges from './components/Challenges.jsx';
 import CreateDiscussion from './components/CreateDiscussion.jsx';
+import CreateChallenge from './components/CreateChallenge.jsx';
 import './css/App.css';
 import fire from './fire.js';
 
@@ -57,6 +58,7 @@ function App() {
               <Route exact path="/discussions/" element={<Discussions/>}/>
               <Route exact path="/challenges/" element={<Challenges/>}/>
               <Route exact path="/create-discussion/" element={<CreateDiscussion/>}/>
+              <Route exact path="/create-challenge/" element={<CreateChallenge/>}/>
               <Route path="*" element={<Home/>}/>
             </Routes>
           </>

@@ -71,7 +71,6 @@ export const createFollowUp = async (d_id, u_email, content) => {
         u_email,
         content
     }
-    console.log("content*   " + content + "   *content");
     if (content !== "" && content !== null){
         axios.post('/dis/p/f/', data).then((response) => {
             console.log(response);

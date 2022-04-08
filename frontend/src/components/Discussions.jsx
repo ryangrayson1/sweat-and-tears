@@ -113,7 +113,6 @@ function Discussions(){
                                                 <div>
                                                     <i className="fas fa-user-alt"></i> <h3>{disc.topic}</h3>
                                                 </div>
-                                                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                                                 <div>
                                                     by {disc.u_email}
                                                 </div>

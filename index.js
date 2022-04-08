@@ -9,6 +9,7 @@ const workoutRouter = require('./routers/workoutRouter.js');
 const profileRouter = require('./routers/profileRouter.js');
 const likeRouter = require('./routers/likeRouter.js');
 const discussionRouter = require('./routers/discussionRouter.js');
+const challengeRouter = require('./routers/challengeRouter.js');
 
 app.use(cors());
 app.use(express.json());
@@ -17,7 +18,8 @@ app.use(express.static(path.resolve(__dirname, './frontend/build')));
 app.use('/wor/', workoutRouter);
 app.use('/pro/', profileRouter);
 app.use('/lik/', likeRouter);
-app.use('/dis/', discussionRouter)
+app.use('/dis/', discussionRouter);
+app.use('/cha/', challengeRouter);
 
 const PORT = process.env.PORT || 3001;
   
