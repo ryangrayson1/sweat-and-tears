@@ -16,9 +16,7 @@ import fire from './fire.js';
 
 function App() {
   document.body.style = 'background: aliceblue;';
-
   const [currentUser, setCurrentUser] = useState(fire.auth().currentUser);
-
   useEffect(() => {
     fire.auth().onAuthStateChanged((user) => {
       setCurrentUser(user);

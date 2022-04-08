@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-var local = "http://localhost:3001";
+if (process.env.NODE_ENV === 'development') {
+  axios.defaults.baseURL = 'http://localhost:3001';
+}
 
 export const createNewWorkout = async (name, description, timeInMinutes, difficulty, exercises, creatorEmail) => {
     const payload = {
@@ -12,7 +14,7 @@ export const createNewWorkout = async (name, description, timeInMinutes, difficu
         exercises
       };
       try {
-        const res = await axios.post(local + '/wor/p/', payload);
+        const res = await axios.post('/wor/p/', payload);
         alert("workout successfully created");
         return res;
     } catch (e) {
@@ -23,7 +25,7 @@ export const createNewWorkout = async (name, description, timeInMinutes, difficu
 
 export const getWorkoutData = async (u_email) => {
   try {
-      const res = await axios.get(local + '/wor/g/', {params: {u_email}});
+      const res = await axios.get('/wor/g/', {params: {u_email}});
       return res.data;
     } catch (e) {
       console.error(e);
@@ -34,7 +36,7 @@ export const deleteWorkout = async (id, email) => {
   const sure = window.confirm("Are you sure you want to delete this workout?");
   if (sure){
       try {
-          await axios.delete(local + '/wor/d/', {params:{w_id: id, w_email: email}});
+          await axios.delete('/wor/d/', {params:{w_id: id, w_email: email}});
           alert("Workout successfully deleted. Refresh to view changes.");
       } catch (e) {
           console.error(e);
@@ -59,7 +61,7 @@ export const editWorkout = async (id, name, description, difficulty, time, exerc
   }
   console.log("HERE");
   try{
-    await axios.post(local + '/wor/e/', data);
+    await axios.post('/wor/e/', data);
     alert("Workout successfully edited! Refresh to view changes.");
   }
   catch{

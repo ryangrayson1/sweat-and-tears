@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-var local = "http://localhost:3001";
+if (process.env.NODE_ENV === 'development') {
+    axios.defaults.baseURL = 'http://localhost:3001';
+  }
 
 export const createDiscussion = async (email, topic, content) => {
     return new Promise((resolve, reject) => {
@@ -9,7 +11,7 @@ export const createDiscussion = async (email, topic, content) => {
             topic,
             content
         }
-        axios.post(local + '/dis/p/', discData).then((response) => {
+        axios.post('/dis/p/', discData).then((response) => {
             resolve(response.data);
 
         }).catch((error) => {
@@ -20,7 +22,7 @@ export const createDiscussion = async (email, topic, content) => {
 
 export const getDiscussions = async (u_email) => {
     return new Promise((resolve, reject) => {
-        axios.get(local + '/dis/g/', {params: {u_email}}).then((response) => {
+        axios.get('/dis/g/', {params: {u_email}}).then((response) => {
             console.log(response.data);
             resolve(response.data);
 
@@ -37,7 +39,7 @@ export const voteDisc = async (d_id, u_email, vote) => {
             u_email,
             vote
         }
-        axios.post(local + '/dis/p/v/', data).then((response) => {
+        axios.post('/dis/p/v/', data).then((response) => {
             resolve(response.data);
 
         }).catch((error) => {
@@ -45,3 +47,20 @@ export const voteDisc = async (d_id, u_email, vote) => {
         });
     });
 }
+
+export const deleteDisc = async (id) => {
+    const sure = window.confirm("Are you sure you want to delete this workout?");
+    if (sure){
+        try {
+            await axios.delete('/dis/d/', {params:{d_id: id}});
+            alert("Discussion successfully deleted. Refresh to view changes.");
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    else{
+        alert("Deletion Cancelled");
+        return false;
+    }
+    return true;
+  };

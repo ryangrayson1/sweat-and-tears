@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getDiscussions, voteDisc } from '../services/discussionServices.js';
+import { getDiscussions, voteDisc, deleteDisc } from '../services/discussionServices.js';
 import fire from '../fire.js';
 
 function Discussions(){
@@ -25,8 +25,8 @@ function Discussions(){
         fetchData();
       }, []);
 
-      const delDiscussion = () => {
-          return 0;
+      const delDiscussion = (id) => {
+          deleteDisc(id);
       }
 
       const upvote = (d_id) => {
@@ -51,7 +51,7 @@ function Discussions(){
         setVoteUpdate(voteUpdate - 1);
         var newvotes = votes;
         var toadd = -1
-        if (votes[d_id][0] == 1) {
+        if (votes[d_id][0] === 1) {
             toadd = -2;
         }
         newvotes[d_id] = [-1, votes[d_id][1] + toadd];
@@ -81,7 +81,7 @@ function Discussions(){
                                         <div>
                                             {votes && 
                                                 <>
-                                                {votes[disc.id][0] == -1 ?
+                                                {votes[disc.id][0] === -1 ?
                                                 <button className="btn-danger" onClick={() => downvote(disc.id)}>
                                                     - <div hidden>{voteUpdate}</div>
                                                 </button> : 
@@ -91,7 +91,7 @@ function Discussions(){
                                                 &emsp;
                                                 <span>{votes[disc.id][1]}</span>
                                                 &emsp;
-                                                {votes[disc.id][0] == 1 ? 
+                                                {votes[disc.id][0] === 1 ? 
                                                 <button className="btn-success" onClick={() => upvote(disc.id)}>
                                                     + <div hidden>{voteUpdate}</div>
                                                 </button> :
@@ -107,7 +107,7 @@ function Discussions(){
                                                     <i class="fas fa-user-alt"></i> <h3>{disc.topic}</h3>
                                                 </div>
                                                 {disc.u_email === fire.auth().currentUser.email &&
-                                                    <button onClick={() => delDiscussion(disc.id, disc.u_email)} className="btn btn-danger active del">
+                                                    <button onClick={() => delDiscussion(disc.id)} className="btn btn-danger active del">
                                                         Delete this Discussion
                                                 </button>}
                                             </div>

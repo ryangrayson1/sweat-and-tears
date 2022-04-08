@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { createDiscussion } from '../services/discussionServices.js';
+import { useNavigate } from 'react-router-dom';
 import fire from '../fire.js';
 
 function CreateDiscussion(){
     const [topic, setTopic] = useState();
     const [content, setContent] = useState();
 
+    const nav = useNavigate();
+
     const handleSubmit = (e) => {
         e.preventDefault();
         e.stopPropagation();
         if (topic && content) {
             createDiscussion(fire.auth().currentUser.email, topic, content).then((discussion) => {
+                nav("/discussions/")
                 alert("Discussion successfully posted!");
             }).catch((error) => {
                 alert("there was an error. Please try again.")
