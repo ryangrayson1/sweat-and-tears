@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+if (process.env.NODE_ENV === 'development') {
+  axios.defaults.baseURL = 'http://localhost:3001';
+}
+
 export const createNewWorkout = async (name, description, timeInMinutes, difficulty, exercises, creatorEmail) => {
     const payload = {
         name,
@@ -19,9 +23,9 @@ export const createNewWorkout = async (name, description, timeInMinutes, difficu
       }
 }
 
-export const getWorkoutData = async () => {
+export const getWorkoutData = async (u_email) => {
   try {
-      const res = await axios.get('/wor/g/');
+      const res = await axios.get('/wor/g/', {params: {u_email}});
       return res.data;
     } catch (e) {
       console.error(e);
@@ -58,9 +62,9 @@ export const editWorkout = async (id, name, description, difficulty, time, exerc
   console.log("HERE");
   try{
     await axios.post('/wor/e/', data);
-    alert("workout successfully edited!");
+    alert("Workout successfully edited! Refresh to view changes.");
   }
   catch{
-    alert("there was an error editing this workout. changes not saved.")
+    alert("There was an error editing this workout. Changes not saved.")
   }
 }

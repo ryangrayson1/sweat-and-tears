@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { createDiscussion } from '../services/discussionServices.js';
+import { useNavigate } from 'react-router-dom';
 import fire from '../fire.js';
 
 function CreateDiscussion(){
     const [topic, setTopic] = useState();
     const [content, setContent] = useState();
 
+    const nav = useNavigate();
+
     const handleSubmit = (e) => {
         e.preventDefault();
         e.stopPropagation();
         if (topic && content) {
             createDiscussion(fire.auth().currentUser.email, topic, content).then((discussion) => {
+                nav("/discussions/")
                 alert("Discussion successfully posted!");
             }).catch((error) => {
                 alert("there was an error. Please try again.")
@@ -24,7 +28,7 @@ function CreateDiscussion(){
         <div className="App">
             <br/><h4 className="words">Create a new Discussion</h4><br/>
             <div className="upload">
-                <div className="card border-primary text-centr" style={{backgroundColor: 'aliceblue', textAlign: 'center'}}>
+                <div className="card border-primary text-centr" style={{backgroundColor: 'aliceblue', textAlign: 'center', marginLeft: '7%', width: '86%'}}>
                     <div className="card-body">
 
                         <form onSubmit={handleSubmit} className="form-inline" style={{marginLeft: '10%', marginRight: '10%', width: '80%'}}>

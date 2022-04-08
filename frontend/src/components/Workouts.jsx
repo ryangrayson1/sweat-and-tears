@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getWorkoutData, deleteWorkout } from '../services/workoutServices';
 import '../css/workout.css';
-import { like } from '../services/likeServices';
+import { like, dislike } from '../services/likeServices';
 import fire from '../fire.js';
 
 function Workouts() {
@@ -9,15 +9,23 @@ function Workouts() {
     const [searchValue, setSearchValue] = useState();
     const [filteredData, setFilteredData] = useState();
     const [workoutData, setWorkoutData] = useState(null);
-    const [likes, setLikes] = useState(0);
+
+    const [likes, setLikes] = useState(); // to immediately update like button
+
+    const [l, setL] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
-          const data = await getWorkoutData();
+          const data = await getWorkoutData(fire.auth().currentUser.email);
           setWorkoutData(data);
+          var liked = {}
+            for (const w of data){
+                liked[w.id] = [w.user_liked, w.likes];
+            }
+            setLikes(liked);
         };
-
         fetchData();
+        
       }, []);
 
     const delWorkout = (w_id, email) => {
@@ -25,8 +33,19 @@ function Workouts() {
     };
 
     const likeWorkout = (w_id) => {
-        setLikes(likes + 1);
+        setL(l + 1);
+        var newlikes = likes;
+        newlikes[w_id] = [true, likes[w_id][1] + 1];
+        setLikes(newlikes);
         like(w_id, fire.auth().currentUser.email);
+    };
+
+    const unlikeWorkout = (w_id) => {
+        setL(l - 1);
+        var newlikes = likes;
+        newlikes[w_id] = [false, likes[w_id][1] - 1];
+        setLikes(newlikes);
+        dislike(w_id, fire.auth().currentUser.email);
     };
 
     return (
@@ -45,11 +64,18 @@ function Workouts() {
                         {!searchValue ? 
                             <>
                                 {workoutData.map((workout) => (
-
                                     <>
                                         <div className="card workout-card bg-transparent border-primary words workout">
                                             <div className="card-header bg-transparent border-primary">
-                                                <b><h3>{workout.name}</h3></b><button href="" onClick={() => likeWorkout(workout.id)}>Like {workout.likes}</button>
+                                                
+                                                <b><h3>{workout.name}</h3></b>
+
+                                                {likes && 
+                                                (likes[workout.id][0] ?
+                                                    <button className="btn-success" onClick={() => unlikeWorkout(workout.id)}>Liked {likes[workout.id][1]}</button> :
+                                                    <button className="btn-ouline-success" onClick={() => likeWorkout(workout.id)}>Like {likes[workout.id][1]}</button>)
+                                                }
+
                                                 <h6>by {workout.u_email}</h6>
                                             </div>
                                             <div className="card-body bg-transparent border-primary">

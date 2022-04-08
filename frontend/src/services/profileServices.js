@@ -1,6 +1,10 @@
 import fire from '../fire.js';
 import axios from 'axios';
 
+if (process.env.NODE_ENV === 'development') {
+    axios.defaults.baseURL = 'http://localhost:3001';
+  }
+
 export const enterNewUser = (fname, lname, email) => {
     const userData = {
         email,
