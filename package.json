@@ -21,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/ryangrayson1/sweat-and-tears/issues"
   },
-  "homepage": "https://sweat-and-tears-340315.uk.r.appspot.com/",
+  "homepage": "https://sweat-and-tears.herokuapp.com",
   "dependencies": {
     "body-parser": "^1.19.1",
     "cors": "^2.8.5",
