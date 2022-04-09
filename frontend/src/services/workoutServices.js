@@ -4,18 +4,20 @@ if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = 'http://localhost:3001';
 }
 
-export const createNewWorkout = async (name, description, timeInMinutes, difficulty, exercises, creatorEmail) => {
-    const payload = {
+export const createNewWorkout = async (u_email, name, description, time, difficulty, exercises) => {
+    const wdata = {
+        u_email,
         name,
         description,
-        timeInMinutes,
+        time,
         difficulty,
-        creatorEmail,
         exercises
       };
       try {
-        const res = await axios.post('/wor/p/', payload);
-        alert("workout successfully created");
+        const res = await axios.post('/wor/p/', wdata);
+        if (res.data !== "failed") {
+          alert("workout successfully created");
+        }
         return res;
     } catch (e) {
         alert("There was a problem creating your workout. please try again.")
@@ -36,9 +38,12 @@ export const deleteWorkout = async (id, email) => {
   const sure = window.confirm("Are you sure you want to delete this workout?");
   if (sure){
       try {
-          await axios.delete('/wor/d/', {params:{w_id: id, w_email: email}});
-          alert("Workout successfully deleted. Refresh to view changes.");
+          const r = await axios.delete('/wor/d/', {params:{w_id: id}});
+          if (r.data !== "failed") {
+            alert("Workout successfully deleted. Refresh to view changes.");
+          }
       } catch (e) {
+          alert("workout deletion failed. Please try again.");
           console.error(e);
       }
   }

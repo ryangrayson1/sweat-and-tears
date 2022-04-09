@@ -8,15 +8,15 @@ workoutRouter.get('/g/', async (req, res) => {
 
     try{
         var qry1 = "SELECT * FROM Workouts";
-        var wData = await getData(qry1);
+        var wData = await executeQuery(qry1);
 
         for (const wrkout of wData) {
             var qry2 = "SELECT * FROM Exercises WHERE w_id = '"+wrkout.id+"' ORDER BY id";
-            var exs = await getData(qry2);
+            var exs = await executeQuery(qry2);
             wrkout["exercises"] = exs;
 
             var qry3 = "SELECT * FROM WorkoutLikes WHERE w_id = '"+wrkout.id+"' and u_email = '"+req.query.u_email+"'";
-            var user_liked = await getData(qry3);
+            var user_liked = await executeQuery(qry3);
             if (user_liked.length > 0){
                 wrkout["user_liked"] = true;
             }
@@ -30,85 +30,32 @@ workoutRouter.get('/g/', async (req, res) => {
     catch(err){
         console.log(err);
     }
-
-    async function getData(qry) {
-        return new Promise((resolve, reject) => {
-            pool.getConnection((err, connection) => {
-                if(err) throw err;
-                connection.query(qry, (err, data) => {
-                    connection.release();
-                    if (!err) {
-                        resolve(data);
-                    } else {
-                        reject(err);
-                    }
-                });
-            });
-        });
-    };
 });
 
-workoutRouter.post('/p/', (req, res) => {
-    console.log(req.body);
+workoutRouter.post('/p/', async (req, res) => {
+    const em = req.body.u_email;
     const n = req.body.name;
-    const e = req.body.creatorEmail;
     const d = req.body.description;
-    const t = req.body.timeInMinutes;
+    const t = req.body.time;
     const di = req.body.difficulty;
-    pool.getConnection((err, connection) => {
-        if(err) throw err;
-        console.log('connected as id ' + connection.threadId);
+    const l = 0;
         
-        let step1 = new Promise( (resolve, reject) => { //inserting new workout into database
-            var qry = "INSERT INTO Workouts (u_email, name, description, time, difficulty) VALUES ('"+e+"', '"+n+"', '"+d+"', '"+t+"', '"+di+"')";
-            connection.query(qry, (err, rows) => {
-                if (!err) {
-                    //res.send(rows);
-                    resolve(rows);
-                } else {
-                    console.log(err);
-                    reject("query failed");
-                }
-            });
-        });
-
-        function step2(id){
-            return new Promise((resolve, reject) => {
-                console.log("STEP2! ID = " + id);
-                
-                console.log(req.body);
-                req.body.exercises.forEach((ex) => {
-                    var qry = "INSERT INTO Exercises (w_id, name, sets, reps) VALUES ('"+id+"', '"+ex.exerciseName+"', '"+ex.sets+"', '"+ex.reps+"')";
-                    connection.query(qry, (err, rows) => {
-                        if (!err) {
-                            // res.send(rows);
-                        } else {
-                            console.log(err);
-                            reject("error creating the workout");
-                        }
-                    });   
-                });
-                resolve("success!");
-            });
+    try{
+        var q1 = "INSERT INTO WORKOUTS (u_email, name, description, time, difficulty, likes) VALUES ('"+em+"','"+n+"','"+d+"','"+t+"','"+di+"','"+l+"')";
+        var r1 = await executeQuery(q1);
+        
+        for (const e of req.body.exercises) {
+            var q2 = "INSERT INTO EXERCISES (w_id, name, sets, reps) VALUES ('"+r1.insertId+"','"+e.exerciseName+"','"+e.sets+"','"+e.reps+"')";
+            var r2 = await executeQuery(q2);
         }
 
-        step1.then((rows) => {
-            var workID = rows.insertId; //get id from insert response
-            step2(workID)
-            .then((result) => {
-                console.log(result);
-                res.send(rows);
-                connection.release();
-            })
-            .catch((err) => {
-                console.log(err);
-                connection.release();
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-        });       
-    });
+        res.send(r1);
+
+    }
+    catch(err){
+        console.log(err);
+        res.send("failed");
+    }
 });
 
 workoutRouter.post('/e/', async (req, res) => {
@@ -131,45 +78,15 @@ workoutRouter.post('/e/', async (req, res) => {
 });
 
 workoutRouter.delete('/d/', async (req, res) => {
-
     try{
-        await deleteWorkout();
-        return true;
+        var q = "DELETE FROM Workouts WHERE id = '"+req.query.w_id+"'";
+        var r = await executeQuery(q);
+        res.send(r);
     }
     catch(err) {
         console.log(err);
+        res.send("failed");
     }
-
-    async function deleteWorkout(){
-        //delete from workout table
-        pool.getConnection((err, connection) => {
-            if (err){ throw err; }
-            var qry = "DELETE FROM Workouts WHERE id = '"+req.query.w_id+"'";
-            connection.query(qry, (err, result) => {
-                connection.release();
-                if (err) {
-                    console.log(err);
-                }
-                else{
-                    console.log(result);
-                }
-            });
-        });
-        //delete from exercise table
-        pool.getConnection((err, connection) => {
-            if (err){ throw err; }
-            var qry = "DELETE FROM Exercises WHERE w_id = '"+req.query.w_id+"'";
-            connection.query(qry, (err, result) => {
-                connection.release();
-                if (err) {
-                    console.log(err);
-                }
-                else{
-                    console.log(result);
-                }
-            });
-        });
-    };
 });
 
 module.exports = workoutRouter;
