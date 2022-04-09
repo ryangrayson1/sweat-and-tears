@@ -22,14 +22,15 @@ app.use('/dis/', discussionRouter);
 app.use('/cha/', challengeRouter);
 
 const PORT = process.env.PORT || 3001;
-  
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-// *PRODUCTION*
-// app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, './frontend/build', 'index.html'));
-// });
+if (process.env.LOCAL_DEV == 0) {
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, './frontend/build', 'index.html'));
+    });
+}
   
 module.exports = app;

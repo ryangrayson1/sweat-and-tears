@@ -14,6 +14,17 @@ if (process.env.LOCAL_DEV == 1){ // local db connection
         database        : process.env.DB_NAME
     });
 }
+
+else if (process.env.HEROKU == 1){ // heroku db connection
+    pool = mysql.createPool({
+        connectionLimit : 10,
+        host            : process.env.HEROKU_DB_HOST,
+        user            : process.env.HEROKU_DB_USER,
+        password        : process.env.HEROKU_DB_PWORD,
+        database        : process.env.HEROKU_DB_NAME
+    });
+}
+
 else { //google cloud connection
   pool = async config => {
       // Extract host and port from socket address
