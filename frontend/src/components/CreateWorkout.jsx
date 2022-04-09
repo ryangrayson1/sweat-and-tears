@@ -41,10 +41,8 @@ function CreateWorkout() {
             alert("Workout time must be less than 10 hours");
         }
         else if (name && description && timeInMinutes && difficulty && exercises && typeof name === 'string') {
-            const creatorEmail = fire.auth().currentUser.email;
-            const creatorName = fire.auth().currentUser.name;
             nav("/workouts/");
-            return createNewWorkout(name, description, timeInMinutes, difficulty, exercises, creatorEmail, creatorName);
+            return createNewWorkout(fire.auth().currentUser.email, name, description, timeInMinutes, difficulty, exercises);
         }
         else{
             alert("Workout not created. Please check that all fields have the correct format.");

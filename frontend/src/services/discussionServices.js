@@ -49,7 +49,7 @@ export const voteDisc = async (d_id, u_email, vote) => {
 }
 
 export const deleteDisc = async (id) => {
-    const sure = window.confirm("Are you sure you want to delete this workout?");
+    const sure = window.confirm("Are you sure you want to delete this discussion?");
     if (sure){
         try {
             await axios.delete('/dis/d/', {params:{d_id: id}});

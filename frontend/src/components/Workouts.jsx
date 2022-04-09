@@ -28,8 +28,8 @@ function Workouts() {
         
       }, []);
 
-    const delWorkout = (w_id, email) => {
-        deleteWorkout(w_id, email);
+    const delWorkout = (w_id) => {
+        deleteWorkout(w_id);
     };
 
     const likeWorkout = (w_id) => {
@@ -91,7 +91,7 @@ function Workouts() {
                                                 </ul>
                                             </div>
                                             {workout.u_email === fire.auth().currentUser.email &&
-                                            <button onClick={() => delWorkout(workout.id, workout.u_email)} className="btn btn-danger active del">
+                                            <button onClick={() => delWorkout(workout.id)} className="btn btn-danger active del">
                                                 Delete this Workout
                                             </button>}
                                             <br/>
