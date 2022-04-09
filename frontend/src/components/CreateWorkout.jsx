@@ -31,16 +31,19 @@ function CreateWorkout() {
         if (name.length > 75){
             alert("Workout name must be less than 75 chars");
         }
-        else if (!(difficulty > 0 || difficulty <= 10)){
+        else if (difficulty < 1 || difficulty > 10){
             alert("difficulty must be a number between 1 and 10, inclusive");
         }
         else if (exercises.length > 10){
             alert("The max number of exercises is 10");
         }
-        else if (timeInMinutes > 600){
-            alert("Workout time must be less than 10 hours");
+        else if (timeInMinutes > 600 || timeInMinutes < 1){
+            alert("Workout time must be positive and less than 10 hours");
         }
-        else if (name && description && timeInMinutes && difficulty && exercises && typeof name === 'string') {
+        else if (exercises[0] === undefined || exercises[0].exerciseName === '' || exercises[0].sets === '' || exercises[0].reps === ''){
+            alert("Please fill out all exercise fields");
+        }
+        else if (name && description && timeInMinutes && difficulty && exercises) {
             nav("/workouts/");
             return createNewWorkout(fire.auth().currentUser.email, name, description, timeInMinutes, difficulty, exercises);
         }
