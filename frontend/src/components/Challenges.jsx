@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import fire from '../fire.js';
-import { getChallenges, deleteChal } from '../services/challengeServices.js';
+import { getChallenges, deleteChal, completeChal } from '../services/challengeServices.js';
 
 function Challenges(){
 
@@ -17,6 +17,10 @@ function Challenges(){
 
       const delChallenge = (id) => {
           deleteChal(id);
+      }
+
+      const completeChallenge = (id) => {
+          completeChal(id, fire.auth().currentUser.email);
       }
     
     return(
@@ -51,9 +55,11 @@ function Challenges(){
                             <h4>{chal.description}</h4>
                         </div>
                     </div>
-                    <button className="btn btn-outline-success">
+                    {chal.user_completed}
+                    {!chal.user_completed &&
+                    <button className="btn btn-outline-success" onClick={() => completeChallenge(chal.id)}>
                         Complete Challenge
-                    </button>
+                    </button>}
                 </>
                 ))}
                 </>}
