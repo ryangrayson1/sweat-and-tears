@@ -61,9 +61,8 @@ export const completeChal = async (id, u_email) => {
         u_email
     }
     axios.post('/cha/p/c/', data).then((response) => {
-        console.log(response);
         if (response.data !== "failed"){
-            alert("Challenge successfully completed!");
+            alert("Well done! Challenge successfully completed!");
         }
         return response.data;
     }).catch((error) => {
@@ -73,10 +72,10 @@ export const completeChal = async (id, u_email) => {
 
 export const delCompleteChal = async (c_id, u_email) => {
     var data = {
-        c_id: c_id,
+        c_id,
         u_email
     }
-    axios.delete('/d/', {params: data}).then((response) => {
+    axios.delete('/cha/d/c/', {params: data}).then((response) => {
         return response.data;
     }).catch((error) => {
         console.error(error);

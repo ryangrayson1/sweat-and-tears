@@ -64,7 +64,7 @@ challengeRouter.post('/p/c/', async (req, res) => {
     }
 });
 
-challengeRouter.delete('/d/', async (req, res) => {
+challengeRouter.delete('/d/c/', async (req, res) => {
     try{
         var q = "DELETE FROM ChallengeComplete WHERE c_id = '"+req.query.c_id+"' and u_email = '"+req.query.u_email+"'";
         var r = await executeQuery(q);

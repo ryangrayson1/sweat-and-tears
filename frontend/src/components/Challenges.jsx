@@ -1,27 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import fire from '../fire.js';
-import { getChallenges, deleteChal, completeChal } from '../services/challengeServices.js';
+import { getChallenges, deleteChal, completeChal, delCompleteChal } from '../services/challengeServices.js';
 
 function Challenges(){
 
     const [chalData, setChalData] = useState(null);
+    const [hasCompleted, setHasCompleted] = useState();
+    const [update, setUpdate] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
           const data = await getChallenges(fire.auth().currentUser.email);
           setChalData(data);
+
+        var user_complete = {}
+          for (const c of data){
+              user_complete[c.id] = c.user_completed;
+          }
+          setHasCompleted(user_complete);
         };
 
         fetchData();
       }, []);
 
-      const delChallenge = (id) => {
-          deleteChal(id);
-      }
+    const delChallenge = (id) => {
+        deleteChal(id);
+    }
 
-      const completeChallenge = (id) => {
-          completeChal(id, fire.auth().currentUser.email);
-      }
+    const completeChallenge = (id) => {
+        var newComp = hasCompleted;
+        newComp[id] = true;
+        setHasCompleted(newComp);
+        setUpdate(update + 1);
+        completeChal(id, fire.auth().currentUser.email);
+    }
+
+    const uncompleteChallenge = (id) => {
+        var newComp = hasCompleted;
+        newComp[id] = false;
+        setHasCompleted(newComp);
+        setUpdate(update - 1);
+        delCompleteChal(id, fire.auth().currentUser.email);
+    }
     
     return(
         <div className="App">
@@ -56,10 +76,16 @@ function Challenges(){
                         </div>
                     </div>
                     {chal.user_completed}
-                    {!chal.user_completed &&
-                    <button className="btn btn-outline-success" onClick={() => completeChallenge(chal.id)}>
-                        Complete Challenge
-                    </button>}
+                    {hasCompleted &&
+                    <>
+                    {!hasCompleted[chal.id] ?
+                        <button className="btn btn-outline-success" onClick={() => completeChallenge(chal.id)}>
+                            Complete Challenge
+                        </button> :
+                        <button className="btn btn-success" onClick={() => uncompleteChallenge(chal.id)}>
+                            Challenge Complete!
+                        </button>}
+                    </>}
                 </>
                 ))}
                 </>}
