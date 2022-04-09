@@ -54,3 +54,30 @@ export const deleteChal = async (id) => {
         }
     }
 }
+
+export const completeChal = async (id, u_email) => {
+    var data = {
+        c_id: id,
+        u_email
+    }
+    axios.post('/cha/p/c/', data).then((response) => {
+        if (response.data !== "failed"){
+            alert("Well done! Challenge successfully completed!");
+        }
+        return response.data;
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
+export const delCompleteChal = async (c_id, u_email) => {
+    var data = {
+        c_id,
+        u_email
+    }
+    axios.delete('/cha/d/c/', {params: data}).then((response) => {
+        return response.data;
+    }).catch((error) => {
+        console.error(error);
+    });
+}
