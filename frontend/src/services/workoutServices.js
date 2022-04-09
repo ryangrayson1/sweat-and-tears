@@ -39,6 +39,7 @@ export const deleteWorkout = async (id, email) => {
           await axios.delete('/wor/d/', {params:{w_id: id, w_email: email}});
           alert("Workout successfully deleted. Refresh to view changes.");
       } catch (e) {
+          alert("failed");
           console.error(e);
       }
   }
