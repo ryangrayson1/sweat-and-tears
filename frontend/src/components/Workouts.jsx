@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { getWorkoutData, deleteWorkout } from '../services/workoutServices';
+import { getWorkoutData, deleteWorkout, createComment } from '../services/workoutServices';
 import '../css/workout.css';
 import { like, dislike } from '../services/likeServices';
 import fire from '../fire.js';
 
 function Workouts() {
 
-    const [searchValue, setSearchValue] = useState();
-    const [filteredData, setFilteredData] = useState();
+    const [searchValue, setSearchValue] = useState("");
     const [workoutData, setWorkoutData] = useState(null);
+    const [commenting, setCommenting] = useState(null);
+    const [comment, setComment] = useState("");
 
     const [likes, setLikes] = useState(); // to immediately update like button
 
@@ -16,7 +17,7 @@ function Workouts() {
 
     useEffect(() => {
         const fetchData = async () => {
-          const data = await getWorkoutData(fire.auth().currentUser.email);
+          const data = await getWorkoutData(fire.auth().currentUser.email, searchValue);
           setWorkoutData(data);
           var liked = {}
             for (const w of data){
@@ -26,7 +27,7 @@ function Workouts() {
         };
         fetchData();
         
-      }, []);
+      }, [searchValue]);
 
     const delWorkout = (w_id) => {
         deleteWorkout(w_id);
@@ -48,6 +49,12 @@ function Workouts() {
         dislike(w_id, fire.auth().currentUser.email);
     };
 
+    const writeComment = (w_id) => {
+        createComment(w_id, fire.auth().currentUser.email, comment);
+    }
+
+    console.log(searchValue);
+
     return (
         <div className="App">
             <br/>
@@ -57,14 +64,22 @@ function Workouts() {
                 <a className="clean" href="/create-workout/">Create a Workout</a>
             </button>
             <br/><br/>
+            <form>
+                <h5>Filter by Keyword: </h5>
+                <input type="text" className="form-control" placeholder="Search for workout names, creators, or descriptions" style={{float: 'left', marginLeft: '30%', width: '40%'}}
+                value={searchValue} onChange={(e) => setSearchValue(e.target.value)}/>
+            </form>
+            <br/><br/>
             {!workoutData ? 
                     <h3 className="words">Loading workouts...</h3> : 
                     <>
 
-                        {!searchValue ? 
+                        {searchValue !== null && searchValue !== undefined && searchValue !== "" &&
+                            <h4>Workouts matching "{searchValue}"</h4>}
                             <>
                                 {workoutData.map((workout) => (
                                     <>
+                                        {(workout.name.includes(searchValue) || workout.description.includes(searchValue) || workout.u_email.includes(searchValue)) && <>
                                         <div className="card workout-card bg-transparent border-primary words workout">
                                             <div className="card-header bg-transparent border-primary">
                                                 
@@ -90,6 +105,29 @@ function Workouts() {
                                                     ))}
                                                 </ul>
                                             </div>
+                                            <div className="card bg-transparent border-primary" style={{marginLeft: "10%", width: "80%"}}>
+                                                <h4>Comments:</h4>
+                                                {!commenting &&
+                                                    <button className="btn btn-info" onClick={() => setCommenting(workout.id)} style={{marginLeft: '35%', width: '30%'}}>
+                                                        <h6 className="clean">Write a Comment</h6>
+                                                    </button>}
+                                                    <br/>
+                                                    {commenting === workout.id &&
+                                                    <form>
+                                                        Comment to add:
+                                                        <textarea style={{width: "90%"}} value={comment} onChange={(e) => setComment(e.target.value)}/>
+                                                        <br/>
+                                                        <input type="submit" className="btn btn-success" value="Post" onClick={() => writeComment(workout.id)}/>
+                                                    </form>
+                                                }
+                                            <br/>
+                                                
+                                                <ul className="list-group list-group-flush bg-transparent border-success">
+                                                    {workout.comments.map((comment) => (
+                                                        <li className="list-group-item bg-transparent border-success"><div className="words">{comment.u_email}: {comment.content}</div></li>
+                                                    ))}
+                                                </ul>
+                                            </div>
                                             {workout.u_email === fire.auth().currentUser.email &&
                                             <button onClick={() => delWorkout(workout.id)} className="btn btn-danger active del">
                                                 Delete this Workout
@@ -97,15 +135,11 @@ function Workouts() {
                                             <br/>
                                         </div>
                                         <br/>
+                                        </>}
                                     </>
 
                                 ))}
-                            </> : 
-
-                            <>
-                                <h6>filtered data will be here</h6>
-                            </>
-                        }   
+                            </> 
                     </>
                 }
         </div>

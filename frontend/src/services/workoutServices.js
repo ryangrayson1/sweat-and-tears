@@ -25,9 +25,9 @@ export const createNewWorkout = async (u_email, name, description, time, difficu
       }
 }
 
-export const getWorkoutData = async (u_email) => {
+export const getWorkoutData = async (u_email, filter) => {
   try {
-      const res = await axios.get('/wor/g/', {params: {u_email}});
+      const res = await axios.get('/wor/g/', {params: {u_email, filter}});
       return res.data;
     } catch (e) {
       console.error(e);
@@ -73,3 +73,14 @@ export const editWorkout = async (id, name, description, difficulty, time, exerc
     alert("There was an error editing this workout. Changes not saved.")
   }
 }
+
+export const createComment = async (w_id, u_email, content) => {
+  try{
+    await axios.post('/wor/c/', {w_id, u_email, content});
+    alert("Comment Posted!");
+  }
+  catch(err){
+    console.log(err);
+    alert("There was an error posting your comment. Please try again.");
+  }
+};

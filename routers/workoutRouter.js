@@ -5,9 +5,14 @@ const pool = require('./pool.js');
 const { executeQuery } = require('./executeQuery.js');
 
 workoutRouter.get('/g/', async (req, res) => {
-
     try{
-        var qry1 = "SELECT * FROM Workouts";
+        if (req.query.filter === null || req.query.filter === undefined || req.query.filter === ""){
+            var filter = "";
+        }
+        else{
+            var filter = "";//" WHERE name LIKE '%"+req.query.filter+"%' OR description LIKE '%"+req.query.filter+"%' or u_email LIKE '%"+req.query.filter+"%'";
+        }
+        var qry1 = "SELECT * FROM Workouts" + filter;
         var wData = await executeQuery(qry1);
 
         for (const wrkout of wData) {
@@ -23,6 +28,10 @@ workoutRouter.get('/g/', async (req, res) => {
             else{
                 wrkout["user_liked"] = false;
             }
+
+            var qry4 = "SELECT * FROM WorkoutComments WHERE w_id = '"+wrkout.id+"'";
+            var c = await executeQuery(qry4);
+            wrkout["comments"] = c;
         }
 
         res.send(wData);
@@ -84,6 +93,18 @@ workoutRouter.delete('/d/', async (req, res) => {
         res.send(r);
     }
     catch(err) {
+        console.log(err);
+        res.send("failed");
+    }
+});
+
+workoutRouter.post('/c/', async (req, res) => {
+    try{
+        var q = "INSERT INTO WorkoutComments (w_id, u_email, content) VALUES ('"+req.body.w_id+"','"+req.body.u_email+"','"+req.body.content+"')";
+        var r = await executeQuery(q);
+        res.send(r);
+    }
+    catch(err){
         console.log(err);
         res.send("failed");
     }
