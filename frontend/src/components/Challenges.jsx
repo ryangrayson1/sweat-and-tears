@@ -75,7 +75,6 @@ function Challenges(){
                             <h4>{chal.description}</h4>
                         </div>
                     </div>
-                    {chal.user_completed}
                     {hasCompleted &&
                     <>
                     {!hasCompleted[chal.id] ?
@@ -86,6 +85,7 @@ function Challenges(){
                             Challenge Complete!
                         </button>}
                     </>}
+                    <br/><br/>
                 </>
                 ))}
                 </>}
