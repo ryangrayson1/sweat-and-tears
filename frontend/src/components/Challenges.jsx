@@ -55,39 +55,39 @@ function Challenges(){
             {!chalData ?
                 <div>Loading...</div> :
                 <>
-                {chalData && chalData.map((chal) => (
-                <>
-                    <div className="card workout-card bg-transparent border-primary words workout">
-                        <div className="card-header bg-transparent border-primary align-items-center">
-                            <div>
-                                Challenge by {chal.u_email}
+                    {chalData.map((chal) => (
+                        <>
+                            <div className="card workout-card bg-transparent border-primary words workout">
+                                <div className="card-header bg-transparent border-primary align-items-center">
+                                    <div>
+                                        Challenge by {chal.u_email}
+                                    </div>
+                                    <br/>
+                                    {chal.u_email === fire.auth().currentUser.email &&
+                                        <button onClick={() => delChallenge(chal.id)} className="btn btn-danger active del">
+                                            Delete
+                                        </button>}
+                                    <br/>
+                                    <br/>
+                                    {chal.weight && <div>Weight: {chal.weight}</div>}
+                                </div>
+                                <div className="card-body bg-transparent border-primary">
+                                    <h4>{chal.description}</h4>
+                                </div>
                             </div>
-                            <br/>
-                            {chal.u_email === fire.auth().currentUser.email &&
-                                <button onClick={() => delChallenge(chal.id)} className="btn btn-danger active del">
-                                    Delete
-                                </button>}
-                            <br/>
-                            <br/>
-                            {chal.weight && <div>Weight: {chal.weight}</div>}
-                        </div>
-                        <div className="card-body bg-transparent border-primary">
-                            <h4>{chal.description}</h4>
-                        </div>
-                    </div>
-                    {hasCompleted &&
-                    <>
-                    {!hasCompleted[chal.id] ?
-                        <button className="btn btn-outline-success" onClick={() => completeChallenge(chal.id)}>
-                            Complete Challenge
-                        </button> :
-                        <button className="btn btn-success" onClick={() => uncompleteChallenge(chal.id)}>
-                            Challenge Complete!
-                        </button>}
-                    </>}
-                    <br/><br/>
-                </>
-                ))}
+                            {hasCompleted &&
+                                <>
+                                    {!hasCompleted[chal.id] ?
+                                    <button className="btn btn-outline-success" onClick={() => completeChallenge(chal.id)}>
+                                        Complete Challenge
+                                    </button> :
+                                    <button className="btn btn-success" onClick={() => uncompleteChallenge(chal.id)}>
+                                        Challenge Complete!
+                                    </button>}
+                                </>}
+                            <br/><br/>
+                        </>
+                    ))}
                 </>}
         </div>
     )

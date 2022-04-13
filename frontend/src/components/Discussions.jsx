@@ -141,7 +141,7 @@ function Discussions(){
                                                 </form>
                                             }
                                             <br/>
-                                            {disc.followUps.length !== 0 ?
+                                            {disc.followUps !== undefined && disc.followUps.length !== 0 ?
                                                 <>
                                                 <ul className="list-group list-group-flush bg-transparent border-success">
                                                     Follow Ups:
