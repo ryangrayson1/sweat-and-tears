@@ -17,7 +17,7 @@ function Workouts() {
 
     useEffect(() => {
         const fetchData = async () => {
-          const data = await getWorkoutData(fire.auth().currentUser.email, searchValue);
+          const data = await getWorkoutData(fire.auth().currentUser.email);
           setWorkoutData(data);
           var liked = {}
             for (const w of data){
@@ -27,7 +27,7 @@ function Workouts() {
         };
         fetchData();
         
-      }, [searchValue]);
+      }, []);
 
     const delWorkout = (w_id) => {
         deleteWorkout(w_id);
@@ -79,7 +79,7 @@ function Workouts() {
                             <>
                                 {workoutData.map((workout) => (
                                     <>
-                                        {(workout.name.includes(searchValue) || workout.description.includes(searchValue) || workout.u_email.includes(searchValue)) && <>
+                                        {(workout.name.toLowerCase().includes(searchValue.toLowerCase()) || workout.description.toLowerCase().includes(searchValue.toLowerCase()) || workout.u_email.toLowerCase().includes(searchValue.toLowerCase())) && <>
                                         <div className="card workout-card bg-transparent border-primary words workout">
                                             <div className="card-header bg-transparent border-primary">
                                                 

@@ -55,7 +55,7 @@ function Challenges(){
             {!chalData ?
                 <div>Loading...</div> :
                 <>
-                {chalData.map((chal) => (
+                {chalData && chalData.map((chal) => (
                 <>
                     <div className="card workout-card bg-transparent border-primary words workout">
                         <div className="card-header bg-transparent border-primary align-items-center">
